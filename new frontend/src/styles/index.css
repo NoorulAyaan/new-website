@@ -1,0 +1,9 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* Ensure pages are slightly longer than viewport so footer sits lower */
+.page {
+	min-height: calc(100vh - 160px);
+	padding-bottom: 4rem;
+}
