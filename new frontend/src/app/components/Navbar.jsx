@@ -25,8 +25,9 @@ export function Navbar() {
               to="/"
               className="flex items-center space-x-1 hover:text-orange-500 transition-colors"
             >
-              <Home className="h-5 w-5" />
-              <span>Home</span>
+              Home 
+              {/* <Home className="h-5 w-5" />
+              <span>Home</span> */}
             </Link>
 
             <Link

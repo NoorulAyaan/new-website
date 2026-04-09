@@ -94,14 +94,14 @@ export function AboutUs() {
             </div>
             <div className="text-center">
               <div className="w-28 h-28 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">MK</div>
-              <h3 className="text-lg font-semibold text-gray-900">Mariam Khan</h3>
+              <h3 className="text-lg font-semibold text-gray-900">Noor Ul Ayan</h3>
               <p className="text-sm text-gray-600">Head of Operations</p>
               <p className="text-gray-600 mt-3">Oversees workshops and logistics to ensure timely parts delivery and service quality.</p>
             </div>
             <div className="text-center">
               <div className="w-28 h-28 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">RS</div>
-              <h3 className="text-lg font-semibold text-gray-900">Rashid Saleem</h3>
-              <p className="text-sm text-gray-600">Chief Mechanic</p>
+              <h3 className="text-lg font-semibold text-gray-900">Sayam Uddin</h3>
+              <p className="text-sm text-gray-600">Head of Sales Department</p>
               <p className="text-gray-600 mt-3">Certified technician with extensive experience in diagnostics and complex repairs.</p>
             </div>
           </div>
