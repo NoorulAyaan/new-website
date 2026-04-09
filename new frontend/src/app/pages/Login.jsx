@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import { Wrench, Mail, Lock, User, Shield } from "lucide-react";
 
@@ -140,10 +140,7 @@ export function Login() {
         </div>
 
         <div className="mt-8 pt-6 border-t border-gray-200">
-          <p className="text-sm text-gray-600 text-center font-semibold mb-2">Demo Admin Credentials:</p>
-          <div className="text-center text-sm text-gray-700">
-            Email: <span className="font-mono">admin@workshop.com</span> / Password: <span className="font-mono">admin123</span>
-          </div>
+          
         </div>
       </div>
     </div>
