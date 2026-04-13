@@ -11,19 +11,38 @@ export function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    const success = login(email, password, role);
-    if (success) {
-      const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-      if (currentUser.role === "admin") {
+
+    try {
+      const res = await fetch("http://localhost:5001/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, role }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message);
+        return;
+      }
+
+      // Save user (optional)
+      localStorage.setItem("currentUser", JSON.stringify(data.user));
+
+      // Redirect
+      if (data.user.role === "admin") {
         navigate("/admin");
       } else {
         navigate("/shop");
       }
-    } else {
-      setError(`Invalid ${role} email or password`);
+
+    } catch (err) {
+      setError("Something went wrong");
     }
   };
 

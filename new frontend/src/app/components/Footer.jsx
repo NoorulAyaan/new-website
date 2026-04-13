@@ -79,7 +79,7 @@ export function Footer() {
                 <MapPin className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
                 <div className="text-gray-300 text-sm">
                   <p>Near Allied Bank</p>
-                  <p>Aliabad Hunza, Gilgit Baltistan</p>
+                  <p>Aliabad Hunza, Gilgit Baltistan,</p>
                   <p>Pakistan</p>
                 </div>
               </div>

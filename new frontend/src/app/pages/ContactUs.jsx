@@ -26,7 +26,7 @@ export function ContactUs() {
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">Address</h3>
                   <p className="text-gray-600">
                     Near Allied Bank<br />
-                    Aliabad Hunza, Gilgit Baltistan<br />
+                    Aliabad Hunza, Gilgit Baltistan,<br />
                     Pakistan
                   </p>
                 </div>

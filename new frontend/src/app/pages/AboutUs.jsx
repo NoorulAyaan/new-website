@@ -87,21 +87,21 @@ export function AboutUs() {
           <h2 className="text-3xl font-bold text-center mb-8 text-gray-900">Meet Our Team</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-28 h-28 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">SA</div>
+              <div className="w-28 h-28 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">AH</div>
               <h3 className="text-lg font-semibold text-gray-900">Noor ul Amin</h3>
               <p className="text-sm text-gray-600">Founder & CEO</p>
               <p className="text-gray-600 mt-3">Leads product direction and partnerships with over 20 years in the auto industry.</p>
             </div>
             <div className="text-center">
-              <div className="w-28 h-28 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">MK</div>
+              <div className="w-28 h-28 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">AB</div>
               <h3 className="text-lg font-semibold text-gray-900">Noor Ul Ayan</h3>
               <p className="text-sm text-gray-600">Head of Operations</p>
               <p className="text-gray-600 mt-3">Oversees workshops and logistics to ensure timely parts delivery and service quality.</p>
             </div>
             <div className="text-center">
-              <div className="w-28 h-28 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">RS</div>
-              <h3 className="text-lg font-semibold text-gray-900">Sayam Uddin</h3>
-              <p className="text-sm text-gray-600">Head of Sales Department</p>
+              <div className="w-28 h-28 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">PB</div>
+              <h3 className="text-lg font-semibold text-gray-900">Atif Ali</h3>
+              <p className="text-sm text-gray-600">Junior Mechanic</p>
               <p className="text-gray-600 mt-3">Certified technician with extensive experience in diagnostics and complex repairs.</p>
             </div>
           </div>
