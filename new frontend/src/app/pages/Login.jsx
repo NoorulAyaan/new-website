@@ -8,7 +8,8 @@ export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { login } = useAuth();
+  // const { login } = useAuth();
+  const { setUser } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -33,6 +34,7 @@ export function Login() {
 
       // Save user (optional)
       localStorage.setItem("currentUser", JSON.stringify(data.user));
+      setUser(data.user);
 
       // Redirect
       if (data.user.role === "admin") {

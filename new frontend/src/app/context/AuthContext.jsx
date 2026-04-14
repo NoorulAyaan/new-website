@@ -3,26 +3,19 @@ import React, { createContext, useContext, useState } from "react";
 const AuthContext = createContext(undefined);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(undefined);
-
-  const login = () => {
-    console.warn("Login is disabled until backend is implemented");
-    return false;
-  };
-
-  const signup = () => {
-    console.warn("Signup is disabled until backend is implemented");
-    return false;
-  };
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("currentUser")) || null
+  );
 
   const logout = () => {
+    localStorage.removeItem("currentUser");
     setUser(null);
   };
 
-  const isAdmin = false;
+  const isAdmin = user?.role === "admin";
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, isAdmin }}>
+    <AuthContext.Provider value={{ user, setUser, logout, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );
