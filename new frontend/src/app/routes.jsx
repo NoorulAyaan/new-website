@@ -26,6 +26,9 @@ function Layout({ children }) {
 function ProtectedRoute({ children, requireAdmin = false }) {
   const { user, isAdmin } = useAuth();
 
+  // 🔥 WAIT until user is loaded
+  if (user === undefined) return null;
+
   if (!user) {
     return <Navigate to="/login" replace />;
   }
@@ -80,9 +83,7 @@ export const router = createBrowserRouter([
     path: "/shop",
     element: (
       <Layout>
-        <ProtectedRoute>
-          <CustomerDashboard />
-        </ProtectedRoute>
+        <CustomerDashboard />
       </Layout>
     ),
   },

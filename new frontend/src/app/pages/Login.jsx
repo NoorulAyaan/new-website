@@ -36,7 +36,7 @@ export function Login() {
 
       // Redirect
       if (data.user.role === "admin") {
-        navigate("/admin");
+      navigate("/admin");
       } else {
         navigate("/shop");
       }

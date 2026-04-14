@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from "react";
 const AuthContext = createContext(undefined);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(undefined);
 
   const login = () => {
     console.warn("Login is disabled until backend is implemented");
