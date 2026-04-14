@@ -76,7 +76,49 @@ const login = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  try {
+    const { email, currentPassword, newPassword } = req.body;
+
+    if (!email || !currentPassword || !newPassword) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Check user
+    const result = await pool.query(
+      "SELECT * FROM users WHERE email = $1",
+      [email]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const user = result.rows[0];
+
+    // Check current password
+    if (user.password !== currentPassword) {
+      return res.status(401).json({ message: "Incorrect current password" });
+    }
+
+    // Update password
+    await pool.query(
+      "UPDATE users SET password = $1 WHERE email = $2",
+      [newPassword, email]
+    );
+
+    return res.status(200).json({
+      message: "Password updated successfully",
+    });
+
+  } catch (error) {
+    console.error("Change password error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   signup,
   login,
+  changePassword,
 };
