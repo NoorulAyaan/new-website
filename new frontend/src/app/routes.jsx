@@ -10,6 +10,7 @@ import { Login } from "./pages/Login";
 import { Signup } from "./pages/Signup";
 import { CustomerDashboard } from "./pages/CustomerDashboard";
 import { AdminDashboard } from "./pages/AdminDashboard";
+import { Profile } from "./pages/Profile";
 
 function Layout({ children }) {
   return (
@@ -84,6 +85,16 @@ export const router = createBrowserRouter([
     element: (
       <Layout>
         <CustomerDashboard />
+      </Layout>
+    ),
+  },
+  {
+    path: "/profile",
+    element: (
+      <Layout>
+        <ProtectedRoute>
+          <Profile />
+        </ProtectedRoute>
       </Layout>
     ),
   },

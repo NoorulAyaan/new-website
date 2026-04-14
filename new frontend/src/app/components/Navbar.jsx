@@ -87,7 +87,11 @@ export function Navbar() {
                     onClick={() => setOpen(!open)}
                     className="flex items-center space-x-2 hover:text-orange-500 cursor-pointer"
                   >
-                    <User className="h-5 w-5" />
+                    <img
+                      src={user.image || "https://via.placeholder.com/30"}
+                      alt="Profile"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
                     <span className="text-sm">{user.name}</span>
                   </button>
 
