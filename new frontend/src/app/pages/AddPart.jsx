@@ -19,11 +19,21 @@ export default function AddPart() {
     part_number: "",
   });
 
-  // LOAD BRANDS
+  // ✅ SAFE FETCH
   useEffect(() => {
-    fetch("http://localhost:5001/api/brands")
-      .then(res => res.json())
-      .then(data => setBrands(data));
+    const fetchBrands = async () => {
+      try {
+        const res = await fetch("http://localhost:5001/api/brands");
+        const data = await res.json();
+
+        setBrands(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error(err);
+        setMessage("Error loading brands");
+      }
+    };
+
+    fetchBrands();
   }, []);
 
   const handleChange = (e) => {
@@ -55,9 +65,7 @@ export default function AddPart() {
         body: formData,
       });
 
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.message);
+      if (!res.ok) throw new Error();
 
       setMessage("Part added successfully ✅");
 
@@ -80,20 +88,25 @@ export default function AddPart() {
 
         <form onSubmit={handleAddPart} className="grid gap-4">
 
-          <select name="brand_id" onChange={handleChange} className="border p-2 rounded">
+          <select
+            name="brand_id"
+            value={form.brand_id}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          >
             <option value="">Select Brand</option>
             {brands.map(b => (
               <option key={b.id} value={b.id}>{b.name}</option>
             ))}
           </select>
 
-          <input name="vehicle_name" placeholder="Vehicle" onChange={handleChange} className="border p-2 rounded" />
-          <input name="name" placeholder="Part Name" onChange={handleChange} className="border p-2 rounded" />
-          <input name="year" placeholder="Year" onChange={handleChange} className="border p-2 rounded" />
-          <input name="engine_details" placeholder="Engine" onChange={handleChange} className="border p-2 rounded" />
-          <input name="price" placeholder="Price" onChange={handleChange} className="border p-2 rounded" />
-          <input name="stock" placeholder="Stock" onChange={handleChange} className="border p-2 rounded" />
-          <input name="part_number" placeholder="Part Number" onChange={handleChange} className="border p-2 rounded" />
+          <input name="vehicle_name" value={form.vehicle_name} onChange={handleChange} placeholder="Vehicle" className="border p-2 rounded" />
+          <input name="name" value={form.name} onChange={handleChange} placeholder="Part Name" className="border p-2 rounded" />
+          <input name="year" value={form.year} onChange={handleChange} placeholder="Year" className="border p-2 rounded" />
+          <input name="engine_details" value={form.engine_details} onChange={handleChange} placeholder="Engine" className="border p-2 rounded" />
+          <input name="price" value={form.price} onChange={handleChange} placeholder="Price" className="border p-2 rounded" />
+          <input name="stock" value={form.stock} onChange={handleChange} placeholder="Stock" className="border p-2 rounded" />
+          <input name="part_number" value={form.part_number} onChange={handleChange} placeholder="Part Number" className="border p-2 rounded" />
 
           <input type="file" onChange={(e) => setImage(e.target.files[0])} />
 
@@ -103,7 +116,7 @@ export default function AddPart() {
 
         </form>
 
-        {message && <p className="mt-4 text-center">{message}</p>}
+        {message && <p className="mt-4 text-center text-red-500">{message}</p>}
 
       </div>
     </div>

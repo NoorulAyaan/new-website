@@ -13,13 +13,19 @@ import { AdminDashboard } from "./pages/AdminDashboard";
 import { Profile } from "./pages/Profile";
 import AddPart from "./pages/AddPart";
 
+import { useLocation } from "react-router-dom";
+
 function Layout({ children }) {
+  const location = useLocation();
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex-grow page">
+
+      <div key={location.pathname} className="flex-grow page">
         {children}
       </div>
+
       <Footer />
     </div>
   );

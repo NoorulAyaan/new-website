@@ -82,7 +82,7 @@ export function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="bg-gray-100">
 
       {/* 🔥 HEADER */}
       <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white">
@@ -157,7 +157,10 @@ export function AdminDashboard() {
 
             <button
               type="button"
-              onClick={() => navigate("/add-part")}
+              onClick={() => {
+                navigate("/add-part");
+                window.location.reload();   
+              }}
               className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md font-semibold"
             >
               + Add Part
