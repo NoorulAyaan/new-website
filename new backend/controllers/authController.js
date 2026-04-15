@@ -116,9 +116,34 @@ const changePassword = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+const updateProfile = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    const image = req.file ? `/uploads/${req.file.filename}` : null;
+
+    const result = await pool.query(
+      `UPDATE users 
+       SET name = $1, image = COALESCE($2, image)
+       WHERE email = $3
+       RETURNING id, name, email, role, image`,
+      [name, image, email]
+    );
+
+    res.json({
+      message: "Profile updated",
+      user: result.rows[0],
+    });
+
+  } catch (error) {
+    console.error("Update profile error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 module.exports = {
   signup,
   login,
   changePassword,
+  updateProfile,
 };
