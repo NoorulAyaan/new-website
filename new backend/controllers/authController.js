@@ -1,4 +1,6 @@
 const pool = require("../db");
+const fs = require("fs");
+const path = require("path");
 
 const signup = async (req, res) => {
     
@@ -42,7 +44,7 @@ const login = async (req, res) => {
     }
 
     const result = await pool.query(
-      "SELECT id, name, email, password, role, created_at FROM users WHERE email = $1",
+      "SELECT id, name, email, password, role, image, created_at FROM users WHERE email = $1",
       [email]
     );
 
@@ -67,6 +69,7 @@ const login = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        image: user.image, // 🔥 ADD THIS
         created_at: user.created_at,
       },
     });
@@ -116,15 +119,49 @@ const changePassword = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
 const updateProfile = async (req, res) => {
   try {
     const { name, email } = req.body;
 
-    const image = req.file ? `/uploads/${req.file.filename}` : null;
+    // 🔥 STEP 1: Get existing user
+    const userResult = await pool.query(
+      "SELECT image FROM users WHERE email = $1",
+      [email]
+    );
 
+    const existingUser = userResult.rows[0];
+
+    let image = existingUser.image; // default = old image
+
+    // 🔥 STEP 2: If new file uploaded
+    if (req.file) {
+      const newImagePath = `/uploads/${req.file.filename}`;
+
+      // 🔥 STEP 3: Delete old image (if exists)
+      if (existingUser.image) {
+        const oldImagePath = path.join(
+          __dirname,
+          "..",
+          existingUser.image
+        );
+
+        fs.unlink(oldImagePath, (err) => {
+          if (err) {
+            console.log("Old image delete failed:", err.message);
+          } else {
+            console.log("Old image deleted");
+          }
+        });
+      }
+
+      image = newImagePath; // use new image
+    }
+
+    // 🔥 STEP 4: Update DB
     const result = await pool.query(
       `UPDATE users 
-       SET name = $1, image = COALESCE($2, image)
+       SET name = $1, image = $2
        WHERE email = $3
        RETURNING id, name, email, role, image`,
       [name, image, email]

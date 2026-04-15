@@ -1,19 +1,27 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
-import { ShoppingCart, User, Wrench, LogOut } from "lucide-react";
+import { ShoppingCart, Wrench, LogOut } from "lucide-react";
 
 export function Navbar() {
   const { user, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-  const dropdownRef = useRef();
+  const dropdownRef = useRef(null);
 
   const handleLogout = () => {
     logout();
     navigate("/");
   };
+
+  // Build correct profile image URL
+  const profileImage =
+    user?.image && user.image.trim() !== ""
+      ? user.image.startsWith("http")
+        ? user.image
+        : `http://localhost:5001${user.image}`
+      : "https://via.placeholder.com/30";
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -24,14 +32,16 @@ export function Navbar() {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   return (
     <nav className="bg-gray-900 text-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-
           {/* LOGO */}
           <Link to="/" className="flex items-center space-x-2">
             <Wrench className="h-8 w-8 text-orange-500" />
@@ -44,22 +54,30 @@ export function Navbar() {
               Home
             </Link>
 
-            <Link to="/about" className="hover:text-orange-500 transition-colors">
+            <Link
+              to="/about"
+              className="hover:text-orange-500 transition-colors"
+            >
               About Us
             </Link>
 
-            <Link to="/services" className="hover:text-orange-500 transition-colors">
+            <Link
+              to="/services"
+              className="hover:text-orange-500 transition-colors"
+            >
               Services
             </Link>
 
-            <Link to="/contact" className="hover:text-orange-500 transition-colors">
+            <Link
+              to="/contact"
+              className="hover:text-orange-500 transition-colors"
+            >
               Contact Us
             </Link>
           </div>
 
           {/* RIGHT SIDE */}
           <div className="flex items-center space-x-6">
-
             {user ? (
               <>
                 {/* Shop / Admin */}
@@ -88,7 +106,7 @@ export function Navbar() {
                     className="flex items-center space-x-2 hover:text-orange-500 cursor-pointer"
                   >
                     <img
-                      src={user.image || "https://via.placeholder.com/30"}
+                      src={profileImage}
                       alt="Profile"
                       className="w-6 h-6 rounded-full object-cover"
                     />
@@ -97,7 +115,6 @@ export function Navbar() {
 
                   {open && (
                     <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg py-2 z-50">
-
                       <button
                         onClick={() => {
                           navigate("/profile");
@@ -128,7 +145,6 @@ export function Navbar() {
                         <LogOut className="h-4 w-4" />
                         <span>Logout</span>
                       </button>
-
                     </div>
                   )}
                 </div>
@@ -150,7 +166,6 @@ export function Navbar() {
                 </Link>
               </div>
             )}
-
           </div>
         </div>
       </div>
