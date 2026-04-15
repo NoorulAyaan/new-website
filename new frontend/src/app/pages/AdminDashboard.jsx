@@ -69,6 +69,27 @@ export function AdminDashboard() {
     }
   };
 
+  // ✅ DELETE PART
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this part?");
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(`http://localhost:5001/api/parts/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error("Delete failed");
+      }
+
+      setParts((prev) => prev.filter((p) => p.id !== id));
+    } catch (err) {
+      console.error(err);
+      alert("Error deleting part");
+    }
+  };
+
   const handleReset = () => {
     setForm({
       brand_id: "",
@@ -159,7 +180,7 @@ export function AdminDashboard() {
               type="button"
               onClick={() => {
                 navigate("/add-part");
-                window.location.reload();   
+                window.location.reload();
               }}
               className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md font-semibold"
             >
@@ -230,6 +251,29 @@ export function AdminDashboard() {
                       Part#: {p.part_number}
                     </p>
                   )}
+
+                  {/* ✅ ACTION BUTTONS */}
+                  <div className="flex gap-2 mt-4">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigate("/add-part", { state: p })
+                        window.location.reload();
+                      }}
+                      
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(p.id)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"
+                    >
+                      Delete
+                    </button>
+                  </div>
 
                 </div>
               </div>

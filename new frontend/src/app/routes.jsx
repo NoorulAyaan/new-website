@@ -12,6 +12,7 @@ import { CustomerDashboard } from "./pages/CustomerDashboard";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { Profile } from "./pages/Profile";
 import AddPart from "./pages/AddPart";
+import EditPart from "./pages/EditPart"; // ✅ ADDED EDIT PAGE IMPORT
 
 import { useLocation } from "react-router-dom";
 
@@ -121,6 +122,16 @@ export const router = createBrowserRouter([
       <Layout>
         <ProtectedRoute requireAdmin={true}>
           <AddPart />
+        </ProtectedRoute>
+      </Layout>
+    ),
+  },
+  {
+    path: "/edit-part/:id",
+    element: (
+      <Layout>
+        <ProtectedRoute requireAdmin={true}>
+          <EditPart />
         </ProtectedRoute>
       </Layout>
     ),

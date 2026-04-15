@@ -152,8 +152,105 @@ const addPart = async (req, res) => {
 };
 
 
+// 🔍 GET SINGLE PART BY ID (NEW)
+const getPartById = async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM parts WHERE id = $1",
+      [req.params.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Part not found" });
+    }
+
+    res.json(result.rows[0]);
+
+  } catch (err) {
+    console.error("Error fetching part:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+// ✏️ UPDATE PART (NEW)
+const updatePart = async (req, res) => {
+  try {
+    const {
+      name,
+      year,
+      engine_details,
+      price,
+      stock,
+      part_number
+    } = req.body;
+
+    const result = await pool.query(
+      `UPDATE parts SET
+        part_name = $1,
+        year = $2,
+        engine_details = $3,
+        price = $4,
+        stock = $5,
+        part_number = $6
+      WHERE id = $7
+      RETURNING *`,
+      [
+        name,
+        year,
+        engine_details,
+        price,
+        stock,
+        part_number,
+        req.params.id
+      ]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Part not found" });
+    }
+
+    res.json({
+      message: "Part updated successfully",
+      part: result.rows[0],
+    });
+
+  } catch (err) {
+    console.error("Error updating part:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+// 🗑️ DELETE PART (NEW)
+const deletePart = async (req, res) => {
+  try {
+    const result = await pool.query(
+      "DELETE FROM parts WHERE id = $1 RETURNING *",
+      [req.params.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Part not found" });
+    }
+
+    res.json({ message: "Part deleted successfully" });
+
+  } catch (err) {
+    console.error("Error deleting part:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+// ✅ EXPORTS
 module.exports = {
   getPartsByVehicle,
   searchParts,
   addPart,
+
+  // 🔥 NEW EXPORTS
+  getPartById,
+  updatePart,
+  deletePart
 };
