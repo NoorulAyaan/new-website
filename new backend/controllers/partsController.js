@@ -177,6 +177,8 @@ const getPartById = async (req, res) => {
 const updatePart = async (req, res) => {
   try {
     const {
+      brand_id,
+      vehicle_name,
       name,
       year,
       engine_details,
@@ -185,57 +187,64 @@ const updatePart = async (req, res) => {
       part_number,
     } = req.body;
 
-    // 🔥 1. GET EXISTING PART (FOR OLD IMAGE)
-    const existing = await pool.query(
-      "SELECT image FROM parts WHERE id = $1",
+    // 🔥 GET EXISTING PART
+    const existingPart = await pool.query(
+      "SELECT * FROM parts WHERE id = $1",
       [req.params.id]
     );
 
-    if (existing.rows.length === 0) {
+    if (existingPart.rows.length === 0) {
       return res.status(404).json({ message: "Part not found" });
     }
 
-    let image = existing.rows[0].image;
+    let vehicleId = existingPart.rows[0].vehicle_id;
 
-    // 🔥 2. IF NEW IMAGE UPLOADED
-    if (req.file) {
-      const newImage = `/uploads/parts/${req.file.filename}`;
+    // 🔥 ONLY UPDATE VEHICLE IF PROVIDED
+    if (brand_id && vehicle_name) {
+      const vehicleCheck = await pool.query(
+        "SELECT id FROM vehicles WHERE name = $1 AND brand_id = $2",
+        [vehicle_name, brand_id]
+      );
 
-      // ❌ DELETE OLD IMAGE
-      if (image) {
-        const oldPath = path.join(
-          __dirname,
-          "..",
-          image.replace("/uploads/", "uploads/")
+      if (vehicleCheck.rows.length === 0) {
+        const newVehicle = await pool.query(
+          "INSERT INTO vehicles (brand_id, name) VALUES ($1, $2) RETURNING id",
+          [brand_id, vehicle_name]
         );
-
-        fs.unlink(oldPath, (err) => {
-          if (err) console.log("Old image delete failed:", err.message);
-        });
+        vehicleId = newVehicle.rows[0].id;
+      } else {
+        vehicleId = vehicleCheck.rows[0].id;
       }
-
-      image = newImage;
     }
 
-    // 🔥 3. UPDATE INCLUDING IMAGE
+    // 🔥 IMAGE
+    let image = existingPart.rows[0].image;
+
+    if (req.file) {
+      image = `/uploads/parts/${req.file.filename}`;
+    }
+
+    // 🔥 UPDATE
     const result = await pool.query(
       `UPDATE parts SET
-        part_name = $1,
-        year = $2,
-        engine_details = $3,
-        price = $4,
-        stock = $5,
-        part_number = $6,
-        image = $7
-      WHERE id = $8
+        vehicle_id = $1,
+        part_name = $2,
+        year = $3,
+        engine_details = $4,
+        price = $5,
+        stock = $6,
+        part_number = $7,
+        image = $8
+      WHERE id = $9
       RETURNING *`,
       [
-        name,
-        year,
-        engine_details,
-        price,
-        stock,
-        part_number,
+        vehicleId,
+        name || existingPart.rows[0].part_name,
+        year || existingPart.rows[0].year,
+        engine_details || existingPart.rows[0].engine_details,
+        price || existingPart.rows[0].price,
+        stock || existingPart.rows[0].stock,
+        part_number || existingPart.rows[0].part_number,
         image,
         req.params.id,
       ]
@@ -247,7 +256,7 @@ const updatePart = async (req, res) => {
     });
 
   } catch (err) {
-    console.error("Error updating part:", err);
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
