@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
     if (req.originalUrl.includes("/api/parts")) {
       cb(null, "uploads/parts");
     } else {
-      cb(null, "uploads");
+      cb(null, "uploads/users");
     }
   },
   filename: (req, file, cb) => {

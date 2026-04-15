@@ -136,14 +136,14 @@ const updateProfile = async (req, res) => {
 
     // 🔥 STEP 2: If new file uploaded
     if (req.file) {
-      const newImagePath = `/uploads/${req.file.filename}`;
+      const newImagePath = `/uploads/users/${req.file.filename}`;
 
       // 🔥 STEP 3: Delete old image (if exists)
       if (existingUser.image) {
         const oldImagePath = path.join(
           __dirname,
           "..",
-          existingUser.image
+          existingUser.image.replace("/uploads/", "uploads/")
         );
 
         fs.unlink(oldImagePath, (err) => {

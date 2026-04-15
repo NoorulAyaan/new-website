@@ -26,7 +26,7 @@ router.post("/", upload.single("image"), addPart);
 
 // 🔥 NEW ROUTES (IMPORTANT)
 router.get("/:id", getPartById);
-router.put("/:id", updatePart);
+router.put("/:id", upload.single("image"), updatePart);
 router.delete("/:id", deletePart);
 
 module.exports = router;
