@@ -11,6 +11,7 @@ import { Signup } from "./pages/Signup";
 import { CustomerDashboard } from "./pages/CustomerDashboard";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { Profile } from "./pages/Profile";
+import AddPart from "./pages/AddPart";
 
 function Layout({ children }) {
   return (
@@ -104,6 +105,16 @@ export const router = createBrowserRouter([
       <Layout>
         <ProtectedRoute requireAdmin={true}>
           <AdminDashboard />
+        </ProtectedRoute>
+      </Layout>
+    ),
+  },
+  {
+    path: "/add-part",
+    element: (
+      <Layout>
+        <ProtectedRoute requireAdmin={true}>
+          <AddPart />
         </ProtectedRoute>
       </Layout>
     ),

@@ -1,15 +1,18 @@
 const pool = require("../db");
 
-const getVehicles = async (req, res) => {
+const getBrands = async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT id, name FROM vehicles ORDER BY name ASC"
+      "SELECT id, name FROM brands ORDER BY name ASC"
     );
+
     res.json(result.rows);
   } catch (err) {
-    console.error("Error fetching vehicles:", err);
+    console.error("Error fetching brands:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-module.exports = { getVehicles };
+module.exports = {
+  getBrands,
+};

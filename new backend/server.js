@@ -2,6 +2,9 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path"); // ✅ IMPORTANT
+const vehicleRoutes = require("./routes/vehicleRoutes");
+const partsRoutes = require("./routes/partsRoutes");
+const brandRoutes = require("./routes/brandRoutes");
 require("dotenv").config();
 
 // 🔥 ROUTES
@@ -33,8 +36,17 @@ app.get("/", (req, res) => {
 // ✅ API ROUTES
 app.use("/api/auth", authRoutes);
 
+// VEHICLE API
+app.use("/api/vehicles", vehicleRoutes);
+
+// PARTS API
+app.use("/api/parts", partsRoutes);
+
 // ✅ PORT SETUP
 const PORT = process.env.PORT || 5001;
+
+// BRANDS API
+app.use("/api/brands", brandRoutes);
 
 // 🚀 START SERVER
 app.listen(PORT, () => {

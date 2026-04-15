@@ -1,203 +1,237 @@
-import { useState, useEffect } from "react";
-import { PartsCard } from "../components/PartsCard";
-import { Search, Filter, Database } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Database, Search, PlusCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function AdminDashboard() {
-  const [vehicleName, setVehicleName] = useState("");
-  const [model, setModel] = useState("");
-  const [engineDetails, setEngineDetails] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [hasSearched, setHasSearched] = useState(false);
-  const [spareParts, setSpareParts] = useState([]);
+  const navigate = useNavigate();
+
+  const [brands, setBrands] = useState([]);
+  const [parts, setParts] = useState([]);
+
+  const [form, setForm] = useState({
+    brand_id: "",
+    vehicle_name: "",
+    name: "",
+    year: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    // Try fetching parts from backend API; fallback to empty array
-    fetch("/api/parts")
-      .then((res) => {
-        if (!res.ok) throw new Error("no api");
-        return res.json();
-      })
-      .then((data) => setSpareParts(data))
-      .catch(() => setSpareParts([]));
+    const fetchBrands = async () => {
+      try {
+        const res = await fetch("http://localhost:5001/api/brands");
+        const data = await res.json();
+        setBrands(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchBrands();
   }, []);
 
-  const handleSearch = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSearch = async (e) => {
     e.preventDefault();
-    setHasSearched(true);
+    setLoading(true);
+    setMessage("");
 
-    const results = spareParts.filter((part) => {
-      const matchesVehicle =
-        !vehicleName ||
-        part.vehicleName.toLowerCase().includes(vehicleName.toLowerCase());
+    try {
+      const params = new URLSearchParams();
 
-      const matchesModel =
-        !model || part.model.toLowerCase().includes(model.toLowerCase());
+      if (form.brand_id) params.append("brand_id", form.brand_id);
+      if (form.vehicle_name) params.append("vehicle_name", form.vehicle_name);
+      if (form.name) params.append("part_name", form.name);
+      if (form.year) params.append("year", form.year);
 
-      const matchesEngine =
-        !engineDetails ||
-        part.engineDetails.toLowerCase().includes(engineDetails.toLowerCase());
+      const res = await fetch(
+        `http://localhost:5001/api/parts/search?${params.toString()}`
+      );
 
-      return matchesVehicle && matchesModel && matchesEngine;
-    });
+      const data = await res.json();
+      setParts(data);
 
-    setSearchResults(results);
+    } catch (err) {
+      console.error(err);
+      setMessage("Error fetching parts");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {
-    setVehicleName("");
-    setModel("");
-    setEngineDetails("");
-    setSearchResults([]);
-    setHasSearched(false);
+    setForm({
+      brand_id: "",
+      vehicle_name: "",
+      name: "",
+      year: "",
+    });
+
+    setParts([]);
+    setMessage("");
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-100">
+
+      {/* 🔥 HEADER */}
       <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center space-x-3 mb-4">
-            <Database className="h-8 w-8 text-orange-500" />
-            <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          </div>
+        <div className="max-w-6xl mx-auto px-6 py-10">
+          <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
           <p className="text-gray-300">
-            Search and manage spare parts inventory by vehicle specifications
+            Search spare parts by brand, vehicle, and year
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Search Form */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center space-x-2">
-            <Filter className="h-6 w-6 text-orange-600" />
-            <span>Find Parts by Vehicle Details</span>
-          </h2>
+      {/* 🔥 MAIN */}
+      <div className="max-w-6xl mx-auto px-6 py-10">
 
-          <form onSubmit={handleSearch} className="space-y-4">
-            <div className="grid md:grid-cols-3 gap-4">
-              <div>
-                <label
-                  htmlFor="vehicleName"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Vehicle Name
-                </label>
-                <input
-                  id="vehicleName"
-                  type="text"
-                  value={vehicleName}
-                  onChange={(e) => setVehicleName(e.target.value)}
-                  placeholder="e.g., Toyota Camry"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                />
-              </div>
+        {/* 🔍 SEARCH CARD */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-10">
 
-              <div>
-                <label
-                  htmlFor="model"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Model
-                </label>
-                <input
-                  id="model"
-                  type="text"
-                  value={model}
-                  onChange={(e) => setModel(e.target.value)}
-                  placeholder="e.g., LE, EX, Sport"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                />
-              </div>
+          <h2 className="text-xl font-semibold mb-6">Find Parts</h2>
 
-              <div>
-                <label
-                  htmlFor="engineDetails"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Engine Details
-                </label>
-                <input
-                  id="engineDetails"
-                  type="text"
-                  value={engineDetails}
-                  onChange={(e) => setEngineDetails(e.target.value)}
-                  placeholder="e.g., 2.5L 4-Cylinder"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                />
-              </div>
-            </div>
+          <div className="grid md:grid-cols-4 gap-4">
 
-            <div className="flex space-x-4">
-              <button
-                type="submit"
-                className="flex items-center space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-md font-semibold transition-colors"
-              >
-                <Search className="h-5 w-5" />
-                <span>Search Parts</span>
-              </button>
-              <button
-                type="button"
-                onClick={handleReset}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-md font-semibold transition-colors"
-              >
-                Reset
-              </button>
-            </div>
-          </form>
+            {/* BRAND */}
+            <select
+              name="brand_id"
+              value={form.brand_id}
+              onChange={handleChange}
+              className="input"
+            >
+              <option value="">Brand</option>
+              {brands.map((b) => (
+                <option key={b.id} value={b.id}>{b.name}</option>
+              ))}
+            </select>
+
+            {/* VEHICLE */}
+            <input
+              name="vehicle_name"
+              value={form.vehicle_name}
+              onChange={handleChange}
+              placeholder="Vehicle (Corolla)"
+              className="input"
+            />
+
+            {/* PART */}
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Part Name"
+              className="input"
+            />
+
+            {/* YEAR */}
+            <input
+              name="year"
+              value={form.year}
+              onChange={handleChange}
+              placeholder="Year"
+              className="input"
+            />
+          </div>
+
+          {/* BUTTONS */}
+          <div className="flex gap-3 mt-6 flex-wrap">
+
+            <button
+              onClick={handleSearch}
+              className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2 rounded-md font-semibold"
+            >
+              Search
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate("/add-part")}
+              className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md font-semibold"
+            >
+              + Add Part
+            </button>
+
+            <button
+              onClick={handleReset}
+              className="bg-gray-300 hover:bg-gray-400 px-5 py-2 rounded-md"
+            >
+              Reset
+            </button>
+          </div>
         </div>
 
-        {/* Search Results */}
-        {hasSearched && (
-          <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">
-                Search Results
-              </h2>
-              <span className="text-gray-600">
-                {searchResults.length} part{searchResults.length !== 1 ? "s" : ""}{" "}
-                found
-              </span>
-            </div>
+        {/* 🔥 RESULTS */}
+        <h2 className="text-2xl font-bold mb-6">
+          Parts ({parts.length})
+        </h2>
 
-            {searchResults.length > 0 ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {searchResults.map((part) => (
-                  <PartsCard
-                    key={part.id}
-                    part={part}
-                    showAddButton={false}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="bg-white rounded-lg shadow-md p-12 text-center">
-                <Database className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500 text-lg">
-                  No parts found matching the specified criteria
-                </p>
-                <p className="text-gray-400 mt-2">
-                  Try adjusting your search parameters
-                </p>
-              </div>
-            )}
+        {parts.length === 0 ? (
+          <div className="bg-white rounded-xl shadow-md p-10 text-center text-gray-500">
+            No parts found
           </div>
-        )}
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-        {/* All Parts Overview */}
-        {!hasSearched && (
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              All Parts in Inventory ({spareParts.length})
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {spareParts.map((part) => (
-                <PartsCard
-                  key={part.id}
-                  part={part}
-                  showAddButton={false}
-                />
-              ))}
-            </div>
+            {parts.map((p) => (
+              <div
+                key={p.id}
+                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition"
+              >
+
+                {/* IMAGE */}
+                {p.image ? (
+                  <img
+                    src={`http://localhost:5001${p.image}`}
+                    className="h-48 w-full object-cover"
+                  />
+                ) : (
+                  <div className="h-48 bg-gray-200 flex items-center justify-center text-gray-500">
+                    No Image
+                  </div>
+                )}
+
+                {/* DETAILS */}
+                <div className="p-4">
+
+                  <h3 className="text-lg font-bold mb-2">
+                    {p.part_name}
+                  </h3>
+
+                  <p className="text-sm text-gray-600">
+                    {p.brand_name} - {p.vehicle_name}
+                  </p>
+
+                  <p className="text-sm text-gray-600">
+                    Year: {p.year}
+                  </p>
+
+                  <div className="flex justify-between mt-3 text-sm">
+                    <span>💰 {p.price}</span>
+                    <span>📦 {p.stock}</span>
+                  </div>
+
+                  {p.part_number && (
+                    <p className="text-xs text-gray-500 mt-2">
+                      Part#: {p.part_number}
+                    </p>
+                  )}
+
+                </div>
+              </div>
+            ))}
+
           </div>
         )}
       </div>
