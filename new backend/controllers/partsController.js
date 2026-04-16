@@ -314,6 +314,28 @@ const deletePart = async (req, res) => {
   }
 };
 
+// ✅ GET ALL PARTS (FIX FOR CUSTOMER DASHBOARD)
+const getAllParts = async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        p.*, 
+        v.name AS vehicle_name, 
+        b.name AS brand_name
+      FROM parts p
+      JOIN vehicles v ON p.vehicle_id = v.id
+      JOIN brands b ON v.brand_id = b.id
+      ORDER BY p.created_at DESC
+    `);
+
+    res.json(result.rows);
+
+  } catch (err) {
+    console.error("Error fetching all parts:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 
 // ✅ EXPORTS
 module.exports = {
@@ -323,4 +345,5 @@ module.exports = {
   getPartById,
   updatePart,
   deletePart,
+  getAllParts
 };

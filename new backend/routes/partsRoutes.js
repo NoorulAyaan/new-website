@@ -7,24 +7,25 @@ const {
   getPartsByVehicle,
   searchParts,
   addPart,
-
-  // ✅ ADD THESE
   getPartById,
   updatePart,
-  deletePart
-
+  deletePart,
+  getAllParts // ✅ 🔥 THIS WAS MISSING
 } = require("../controllers/partsController");
 
 // 🔍 SEARCH PARTS (MAIN)
 router.get("/search", searchParts);
 
-// (optional old)
-router.get("/", getPartsByVehicle);
+// 🔥 MAIN FIX (THIS SHOWS ALL PARTS)
+router.get("/", getAllParts);
+
+// OPTIONAL OLD
+router.get("/by-vehicle", getPartsByVehicle);
 
 // ➕ ADD PART
 router.post("/", upload.single("image"), addPart);
 
-// 🔥 NEW ROUTES (IMPORTANT)
+// 🔥 NEW ROUTES
 router.get("/:id", getPartById);
 router.put("/:id", upload.single("image"), updatePart);
 router.delete("/:id", deletePart);
