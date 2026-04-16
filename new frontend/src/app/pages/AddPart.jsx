@@ -16,7 +16,7 @@ export default function AddPart() {
 
   // 🔥 FORM STATE (SAFE INITIALIZATION)
   const [form, setForm] = useState({
-    brand_id: editData?.brand_id || "", // ⚠️ may be empty initially
+    brand_id: editData?.brand_id || "",
     vehicle_name: editData?.vehicle_name || "",
     name: editData?.part_name || "",
     year: editData?.year || "",
@@ -26,7 +26,7 @@ export default function AddPart() {
     part_number: editData?.part_number || "",
   });
 
-  // 🔍 DEBUG (VERY IMPORTANT)
+  // 🔍 DEBUG
   useEffect(() => {
     console.log("EDIT DATA:", editData);
   }, []);
@@ -37,7 +37,6 @@ export default function AddPart() {
       try {
         const res = await fetch("http://localhost:5001/api/brands");
         const data = await res.json();
-
         setBrands(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error(err);
@@ -51,7 +50,6 @@ export default function AddPart() {
   // 🔥 FIX: AUTO SET brand_id FROM brand_name (EDIT MODE)
   useEffect(() => {
     if (isEditMode && brands.length > 0 && !form.brand_id) {
-      // 🔍 Find brand by name
       const selectedBrand = brands.find(
         (b) => b.name === editData?.brand_name
       );
@@ -80,22 +78,18 @@ export default function AddPart() {
     try {
       let res;
 
-      // 🔥 ALWAYS USE FormData (for file upload)
       const formData = new FormData();
 
-      // 🔥 APPEND ONLY VALID VALUES (PREVENT EMPTY STRING BUG)
       Object.keys(form).forEach((key) => {
         if (form[key] !== "") {
           formData.append(key, form[key]);
         }
       });
 
-      // 🔥 APPEND IMAGE IF SELECTED
       if (image) {
         formData.append("image", image);
       }
 
-      // 🔥 EDIT MODE → PUT
       if (isEditMode) {
         res = await fetch(
           `http://localhost:5001/api/parts/${editData.id}`,
@@ -105,7 +99,6 @@ export default function AddPart() {
           }
         );
       } else {
-        // 🔥 ADD MODE → POST
         res = await fetch("http://localhost:5001/api/parts", {
           method: "POST",
           body: formData,
@@ -116,128 +109,196 @@ export default function AddPart() {
 
       if (!res.ok) throw new Error(data.message);
 
-      // ✅ SUCCESS MESSAGE
       setMessage(
         isEditMode
-          ? "Part updated successfully ✅"
-          : "Part added successfully ✅"
+          ? "Part updated successfully"
+          : "Part added successfully"
       );
 
-      // 🔥 REDIRECT AFTER SUCCESS
       setTimeout(() => navigate("/admin"), 1000);
 
     } catch (err) {
       console.error(err);
-      setMessage("Error processing request");
+      setMessage("Please fill all required fields");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-10">
+    <div className="min-h-screen bg-gray-50 py-12 px-4 relative">
 
-      <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow">
+      {/* 🔥 SOFT GRADIENT BACKGROUND */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100 -z-10"></div>
 
-        {/* 🔥 DYNAMIC TITLE */}
-        <h2 className="text-2xl font-bold mb-6">
-          {isEditMode ? "Edit Part" : "Add New Part"}
-        </h2>
+      {/* 🔥 SUBTLE CENTER GLOW */}
+      <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-[600px] h-[300px] bg-white opacity-40 blur-3xl -z-10"></div>
 
-        <form onSubmit={handleSubmit} className="grid gap-4">
+      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md p-8">
 
-          {/* 🔥 BRAND SELECT */}
-          <select
-            name="brand_id"
-            value={form.brand_id}
-            onChange={handleChange}
-            className="border p-2 rounded"
-          >
-            <option value="">Select Brand</option>
-            {brands.map((b) => (
-              <option key={b.id} value={b.id}>
-                {b.name}
-              </option>
-            ))}
-          </select>
+        {/* HEADER */}
+        <div className="mb-8 border-b pb-4">
+          <h2 className="text-2xl font-semibold text-gray-900">
+            {isEditMode ? "Edit Part" : "Add New Part"}
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Manage vehicle spare parts with accurate details
+          </p>
+        </div>
 
-          {/* 🔥 VEHICLE */}
-          <input
-            name="vehicle_name"
-            value={form.vehicle_name}
-            onChange={handleChange}
-            placeholder="Vehicle"
-            className="border p-2 rounded"
-          />
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-          {/* 🔥 PART NAME */}
-          <input
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            placeholder="Part Name"
-            className="border p-2 rounded"
-          />
+          {/* BRAND */}
+          <div>
+            <label className="text-sm text-gray-700 font-medium">Brand</label>
+            <select
+              name="brand_id"
+              value={form.brand_id}
+              onChange={handleChange}
+              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+            >
+              <option value="">Select Brand</option>
+              {brands.map((b) => (
+                <option key={b.id} value={b.id}>{b.name}</option>
+              ))}
+            </select>
+          </div>
 
-          {/* 🔥 YEAR */}
-          <input
-            name="year"
-            value={form.year}
-            onChange={handleChange}
-            placeholder="Year"
-            className="border p-2 rounded"
-          />
+          {/* VEHICLE */}
+          <div>
+            <label className="text-sm text-gray-700 font-medium">Vehicle</label>
+            <input
+              name="vehicle_name"
+              value={form.vehicle_name}
+              onChange={handleChange}
+              placeholder="e.g. Camry"
+              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+            />
+          </div>
 
-          {/* 🔥 ENGINE DETAILS */}
-          <input
-            name="engine_details"
-            value={form.engine_details}
-            onChange={handleChange}
-            placeholder="Engine"
-            className="border p-2 rounded"
-          />
+          {/* PART NAME */}
+          <div>
+            <label className="text-sm text-gray-700 font-medium">Part Name</label>
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Brake Pad"
+              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+            />
+          </div>
 
-          {/* 🔥 PRICE */}
-          <input
-            name="price"
-            value={form.price}
-            onChange={handleChange}
-            placeholder="Price"
-            className="border p-2 rounded"
-          />
+          {/* YEAR */}
+          <div>
+            <label className="text-sm text-gray-700 font-medium">Year</label>
+            <input
+              name="year"
+              value={form.year}
+              onChange={handleChange}
+              placeholder="2022"
+              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+            />
+          </div>
 
-          {/* 🔥 STOCK */}
-          <input
-            name="stock"
-            value={form.stock}
-            onChange={handleChange}
-            placeholder="Stock"
-            className="border p-2 rounded"
-          />
+          {/* ENGINE */}
+          <div>
+            <label className="text-sm text-gray-700 font-medium">Engine</label>
+            <input
+              name="engine_details"
+              value={form.engine_details}
+              onChange={handleChange}
+              placeholder="1.8L"
+              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+            />
+          </div>
 
-          {/* 🔥 PART NUMBER */}
-          <input
-            name="part_number"
-            value={form.part_number}
-            onChange={handleChange}
-            placeholder="Part Number"
-            className="border p-2 rounded"
-          />
+          {/* PRICE */}
+          <div>
+            <label className="text-sm text-gray-700 font-medium">Price</label>
+            <input
+              name="price"
+              value={form.price}
+              onChange={handleChange}
+              placeholder="4000"
+              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+            />
+          </div>
 
-          {/* 🔥 IMAGE INPUT */}
-          <input
-            type="file"
-            onChange={(e) => setImage(e.target.files[0])}
-          />
+          {/* STOCK */}
+          <div>
+            <label className="text-sm text-gray-700 font-medium">Stock</label>
+            <input
+              name="stock"
+              value={form.stock}
+              onChange={handleChange}
+              placeholder="10"
+              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+            />
+          </div>
 
-          {/* 🔥 BUTTON TEXT FIX */}
-          <button className="bg-green-600 text-white py-2 rounded">
-            {isEditMode ? "Update Part" : "Add Part"}
-          </button>
+          {/* PART NUMBER */}
+          <div>
+            <label className="text-sm text-gray-700 font-medium">Part Number</label>
+            <input
+              name="part_number"
+              value={form.part_number}
+              onChange={handleChange}
+              placeholder="Optional"
+              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+            />
+          </div>
+
+          {/* FILE UPLOAD */}
+          <div className="md:col-span-2">
+            <label className="text-sm text-gray-700 font-medium block mb-1">
+              Upload Image
+            </label>
+
+            <input
+              id="fileUpload"
+              type="file"
+              className="hidden"
+              onChange={(e) => setImage(e.target.files[0])}
+            />
+
+            <div className="flex items-center gap-3">
+              <label
+                htmlFor="fileUpload"
+                className="cursor-pointer bg-gray-900 text-white px-4 py-2 rounded-md text-sm hover:bg-black transition"
+              >
+                Choose File
+              </label>
+
+              <span className="text-sm text-gray-600">
+                {image ? image.name : "No file selected"}
+              </span>
+            </div>
+
+            {/* IMAGE PREVIEW */}
+            {image && (
+              <img
+                src={URL.createObjectURL(image)}
+                alt="preview"
+                className="mt-3 h-20 rounded-md border"
+              />
+            )}
+          </div>
+
+          {/* BUTTON */}
+          <div className="md:col-span-2">
+            <button
+              type="submit"
+              className="w-full bg-orange-500 hover:bg-orange-600 transition text-white font-medium py-3 rounded-md"
+            >
+              {isEditMode ? "Update Part" : "Add Part"}
+            </button>
+          </div>
 
         </form>
 
-        {/* 🔥 MESSAGE */}
+        {/* MESSAGE */}
         {message && (
-          <p className="mt-4 text-center text-red-500">{message}</p>
+          <div className="mt-6 text-center">
+            <p className="text-sm text-red-500">{message}</p>
+          </div>
         )}
 
       </div>

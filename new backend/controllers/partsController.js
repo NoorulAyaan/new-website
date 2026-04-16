@@ -221,7 +221,22 @@ const updatePart = async (req, res) => {
     let image = existingPart.rows[0].image;
 
     if (req.file) {
-      image = `/uploads/parts/${req.file.filename}`;
+      const newImage = `/uploads/parts/${req.file.filename}`;
+
+      // 🔥 DELETE OLD IMAGE
+      if (image) {
+        const oldPath = path.join(
+          __dirname,
+          "..",
+          image.replace("/uploads/", "uploads/")
+        );
+
+        if (fs.existsSync(oldPath)) {
+          fs.unlinkSync(oldPath);
+        }
+      }
+
+      image = newImage;
     }
 
     // 🔥 UPDATE

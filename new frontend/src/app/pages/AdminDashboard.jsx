@@ -103,13 +103,13 @@ export function AdminDashboard() {
   };
 
   return (
-    <div className="bg-gray-100">
+    <div className="min-h-screen bg-gray-200">
 
       {/* 🔥 HEADER */}
-      <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white">
+      <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white shadow-md">
         <div className="max-w-6xl mx-auto px-6 py-10">
-          <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
-          <p className="text-gray-300">
+          <h1 className="text-3xl font-semibold mb-1">Admin Dashboard</h1>
+          <p className="text-gray-300 text-sm">
             Search spare parts by brand, vehicle, and year
           </p>
         </div>
@@ -119,9 +119,11 @@ export function AdminDashboard() {
       <div className="max-w-6xl mx-auto px-6 py-10">
 
         {/* 🔍 SEARCH CARD */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-10">
+        <div className="bg-white rounded-xl shadow-md border border-gray-200 p-6 mb-10">
 
-          <h2 className="text-xl font-semibold mb-6">Find Parts</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-6">
+            Find Parts
+          </h2>
 
           <div className="grid md:grid-cols-4 gap-4">
 
@@ -130,7 +132,7 @@ export function AdminDashboard() {
               name="brand_id"
               value={form.brand_id}
               onChange={handleChange}
-              className="input"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
             >
               <option value="">Brand</option>
               {brands.map((b) => (
@@ -143,8 +145,8 @@ export function AdminDashboard() {
               name="vehicle_name"
               value={form.vehicle_name}
               onChange={handleChange}
-              placeholder="Vehicle (Corolla)"
-              className="input"
+              placeholder="Vehicle"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
             />
 
             {/* PART */}
@@ -153,7 +155,7 @@ export function AdminDashboard() {
               value={form.name}
               onChange={handleChange}
               placeholder="Part Name"
-              className="input"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
             />
 
             {/* YEAR */}
@@ -162,7 +164,7 @@ export function AdminDashboard() {
               value={form.year}
               onChange={handleChange}
               placeholder="Year"
-              className="input"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
             />
           </div>
 
@@ -171,7 +173,7 @@ export function AdminDashboard() {
 
             <button
               onClick={handleSearch}
-              className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2 rounded-md font-semibold"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-md text-sm font-medium transition"
             >
               Search
             </button>
@@ -182,36 +184,39 @@ export function AdminDashboard() {
                 navigate("/add-part");
                 window.location.reload();
               }}
-              className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md font-semibold"
+              className="bg-gray-900 hover:bg-black text-white px-5 py-2 rounded-md text-sm font-medium transition"
             >
               + Add Part
             </button>
 
             <button
               onClick={handleReset}
-              className="bg-gray-300 hover:bg-gray-400 px-5 py-2 rounded-md"
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-5 py-2 rounded-md text-sm transition"
             >
               Reset
             </button>
           </div>
         </div>
 
-        {/* 🔥 RESULTS */}
-        <h2 className="text-2xl font-bold mb-6">
+        {/* 🔥 RESULTS HEADER */}
+        <h2 className="text-xl font-semibold text-gray-800 mb-6">
           Parts ({parts.length})
         </h2>
 
+        {/* 🔥 EMPTY STATE */}
         {parts.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-md p-10 text-center text-gray-500">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-10 text-center text-gray-500">
             No parts found
           </div>
         ) : (
+
+          /* 🔥 GRID */
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
             {parts.map((p) => (
               <div
                 key={p.id}
-                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition"
+                className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition overflow-hidden"
               >
 
                 {/* IMAGE */}
@@ -221,7 +226,7 @@ export function AdminDashboard() {
                     className="h-48 w-full object-cover"
                   />
                 ) : (
-                  <div className="h-48 bg-gray-200 flex items-center justify-center text-gray-500">
+                  <div className="h-48 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
                     No Image
                   </div>
                 )}
@@ -229,39 +234,39 @@ export function AdminDashboard() {
                 {/* DETAILS */}
                 <div className="p-4">
 
-                  <h3 className="text-lg font-bold mb-2">
+                  <h3 className="text-md font-semibold text-gray-900 mb-1">
                     {p.part_name}
                   </h3>
 
-                  <p className="text-sm text-gray-600">
-                    {p.brand_name} - {p.vehicle_name}
+                  <p className="text-sm text-gray-500">
+                    {p.brand_name} • {p.vehicle_name}
                   </p>
 
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-500 mt-1">
                     Year: {p.year}
                   </p>
 
-                  <div className="flex justify-between mt-3 text-sm">
+                  <div className="flex justify-between mt-3 text-sm text-gray-700">
                     <span>💰 {p.price}</span>
                     <span>📦 {p.stock}</span>
                   </div>
 
                   {p.part_number && (
-                    <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-xs text-gray-400 mt-2">
                       Part#: {p.part_number}
                     </p>
                   )}
 
-                  {/* ✅ ACTION BUTTONS */}
+                  {/* ACTIONS */}
                   <div className="flex gap-2 mt-4">
+
                     <button
                       type="button"
                       onClick={() => {
-                        navigate("/add-part", { state: p })
+                        navigate("/add-part", { state: p });
                         window.location.reload();
                       }}
-                      
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+                      className="flex-1 bg-gray-900 hover:bg-black text-white py-1.5 rounded text-sm transition"
                     >
                       Edit
                     </button>
@@ -269,10 +274,11 @@ export function AdminDashboard() {
                     <button
                       type="button"
                       onClick={() => handleDelete(p.id)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"
+                      className="flex-1 bg-red-500 hover:bg-red-600 text-white py-1.5 rounded text-sm transition"
                     >
                       Delete
                     </button>
+
                   </div>
 
                 </div>
