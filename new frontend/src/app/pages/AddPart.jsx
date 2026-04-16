@@ -5,16 +5,13 @@ export default function AddPart() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 🔥 GET EDIT DATA FROM NAVIGATION
   const editData = location.state;
   const isEditMode = !!editData;
 
-  // 🔥 STATE
   const [brands, setBrands] = useState([]);
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState("");
 
-  // 🔥 FORM STATE (SAFE INITIALIZATION)
   const [form, setForm] = useState({
     brand_id: editData?.brand_id || "",
     vehicle_name: editData?.vehicle_name || "",
@@ -26,12 +23,10 @@ export default function AddPart() {
     part_number: editData?.part_number || "",
   });
 
-  // 🔍 DEBUG
   useEffect(() => {
     console.log("EDIT DATA:", editData);
   }, []);
 
-  // ✅ FETCH BRANDS
   useEffect(() => {
     const fetchBrands = async () => {
       try {
@@ -47,7 +42,6 @@ export default function AddPart() {
     fetchBrands();
   }, []);
 
-  // 🔥 FIX: AUTO SET brand_id FROM brand_name (EDIT MODE)
   useEffect(() => {
     if (isEditMode && brands.length > 0 && !form.brand_id) {
       const selectedBrand = brands.find(
@@ -63,7 +57,6 @@ export default function AddPart() {
     }
   }, [brands, editData, isEditMode]);
 
-  // 🔥 HANDLE INPUT CHANGE
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -71,7 +64,6 @@ export default function AddPart() {
     });
   };
 
-  // 🔥 HANDLE FORM SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -126,19 +118,28 @@ export default function AddPart() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 relative">
 
-      {/* 🔥 SOFT GRADIENT BACKGROUND */}
+      {/* BACKGROUND */}
       <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100 -z-10"></div>
-
-      {/* 🔥 SUBTLE CENTER GLOW */}
       <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-[600px] h-[300px] bg-white opacity-40 blur-3xl -z-10"></div>
 
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md p-8">
 
-        {/* HEADER */}
+        {/* 🔥 HEADER WITH BACK BUTTON */}
         <div className="mb-8 border-b pb-4">
+
+          {/* BACK BUTTON */}
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-1 text-sm text-gray-600 hover:text-black mb-2 transition"
+          >
+            ← Back
+          </button>
+
           <h2 className="text-2xl font-semibold text-gray-900">
             {isEditMode ? "Edit Part" : "Add New Part"}
           </h2>
+
           <p className="text-sm text-gray-500 mt-1">
             Manage vehicle spare parts with accurate details
           </p>
@@ -246,7 +247,7 @@ export default function AddPart() {
             />
           </div>
 
-          {/* FILE UPLOAD */}
+          {/* FILE */}
           <div className="md:col-span-2">
             <label className="text-sm text-gray-700 font-medium block mb-1">
               Upload Image
@@ -272,7 +273,6 @@ export default function AddPart() {
               </span>
             </div>
 
-            {/* IMAGE PREVIEW */}
             {image && (
               <img
                 src={URL.createObjectURL(image)}

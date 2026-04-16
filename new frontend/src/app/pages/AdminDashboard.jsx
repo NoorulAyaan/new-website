@@ -105,67 +105,81 @@ export function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gray-200">
 
-      {/* 🔥 HEADER */}
+      {/* HEADER */}
       <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white shadow-md">
         <div className="max-w-6xl mx-auto px-6 py-10">
           <h1 className="text-3xl font-semibold mb-1">Admin Dashboard</h1>
           <p className="text-gray-300 text-sm">
-            Search spare parts by brand, vehicle, and year
+            Search and manage vehicle spare parts
           </p>
         </div>
       </div>
 
-      {/* 🔥 MAIN */}
+      {/* MAIN */}
       <div className="max-w-6xl mx-auto px-6 py-10">
 
-        {/* 🔍 SEARCH CARD */}
+        {/* SEARCH CARD */}
         <div className="bg-white rounded-xl shadow-md border border-gray-200 p-6 mb-10">
 
           <h2 className="text-lg font-semibold text-gray-800 mb-6">
             Find Parts
           </h2>
 
-          <div className="grid md:grid-cols-4 gap-4">
+          {/* FILTER GRID */}
+          <div className="grid md:grid-cols-4 gap-5">
 
             {/* BRAND */}
-            <select
-              name="brand_id"
-              value={form.brand_id}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
-            >
-              <option value="">Brand</option>
-              {brands.map((b) => (
-                <option key={b.id} value={b.id}>{b.name}</option>
-              ))}
-            </select>
+            <div>
+              <label className="text-xs text-gray-500 mb-1 block">Brand</label>
+              <select
+                name="brand_id"
+                value={form.brand_id}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-gray-800"
+              >
+                <option value="">Select</option>
+                {brands.map((b) => (
+                  <option key={b.id} value={b.id}>{b.name}</option>
+                ))}
+              </select>
+            </div>
 
             {/* VEHICLE */}
-            <input
-              name="vehicle_name"
-              value={form.vehicle_name}
-              onChange={handleChange}
-              placeholder="Vehicle"
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
-            />
+            <div>
+              <label className="text-xs text-gray-500 mb-1 block">Vehicle</label>
+              <input
+                name="vehicle_name"
+                value={form.vehicle_name}
+                onChange={handleChange}
+                placeholder="e.g. Corolla"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-gray-800"
+              />
+            </div>
 
             {/* PART */}
-            <input
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Part Name"
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
-            />
+            <div>
+              <label className="text-xs text-gray-500 mb-1 block">Part Name</label>
+              <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Brake Pad"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-gray-800"
+              />
+            </div>
 
             {/* YEAR */}
-            <input
-              name="year"
-              value={form.year}
-              onChange={handleChange}
-              placeholder="Year"
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
-            />
+            <div>
+              <label className="text-xs text-gray-500 mb-1 block">Year</label>
+              <input
+                name="year"
+                value={form.year}
+                onChange={handleChange}
+                placeholder="2022"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-gray-800"
+              />
+            </div>
+
           </div>
 
           {/* BUTTONS */}
@@ -173,7 +187,7 @@ export function AdminDashboard() {
 
             <button
               onClick={handleSearch}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-md text-sm font-medium transition"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-md text-sm font-medium transition shadow-sm"
             >
               Search
             </button>
@@ -191,26 +205,32 @@ export function AdminDashboard() {
 
             <button
               onClick={handleReset}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-5 py-2 rounded-md text-sm transition"
+              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2 rounded-md text-sm transition border"
             >
               Reset
             </button>
           </div>
         </div>
 
-        {/* 🔥 RESULTS HEADER */}
-        <h2 className="text-xl font-semibold text-gray-800 mb-6">
-          Parts ({parts.length})
-        </h2>
+        {/* RESULTS HEADER */}
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold text-gray-800">
+            Parts ({parts.length})
+          </h2>
+        </div>
 
-        {/* 🔥 EMPTY STATE */}
+        {/* EMPTY STATE */}
         {parts.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-10 text-center text-gray-500">
-            No parts found
+          <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
+
+            <p className="text-gray-400 text-sm">
+              No parts found. Try adjusting your filters.
+            </p>
+
           </div>
         ) : (
 
-          /* 🔥 GRID */
+          /* GRID */
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
             {parts.map((p) => (
