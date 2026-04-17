@@ -1,22 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 
 export function Profile() {
   const { user, setUser } = useAuth();
 
-  // 🔹 STATE FOR PROFILE
   const [name, setName] = useState(user?.name || "");
-
-  // 🔥 FIX: store FULL URL if image exists
   const [preview, setPreview] = useState(
     user?.image ? `http://localhost:5001${user.image}` : ""
   );
-
-  // 🔥 STORE REAL FILE
   const [file, setFile] = useState(null);
 
-  const [activeTab, setActiveTab] = useState("profile");
+  // 🔥 FIX: get tab from URL
+  const getTabFromURL = () => {
+    return window.location.hash.replace("#", "") || "profile";
+  };
+
+  const [activeTab, setActiveTab] = useState(getTabFromURL());
+
+  // 🔥 FIX: listen to URL changes (refresh/back)
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveTab(getTabFromURL());
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
 
   // 🔐 PASSWORD STATES
   const [currentPassword, setCurrentPassword] = useState("");
@@ -29,7 +42,7 @@ export function Profile() {
 
     if (selectedFile) {
       setFile(selectedFile);
-      setPreview(URL.createObjectURL(selectedFile)); // preview only
+      setPreview(URL.createObjectURL(selectedFile));
     }
   };
 
@@ -37,7 +50,6 @@ export function Profile() {
   const handleSave = async () => {
     try {
       const formData = new FormData();
-
       formData.append("name", name);
       formData.append("email", user.email);
 
@@ -45,10 +57,13 @@ export function Profile() {
         formData.append("image", file);
       }
 
-      const res = await fetch("http://localhost:5001/api/auth/update-profile", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        "http://localhost:5001/api/auth/update-profile",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await res.json();
 
@@ -56,17 +71,14 @@ export function Profile() {
         return toast.error(data.message || "Update failed");
       }
 
-      // 🔥 IMPORTANT: update user state from backend
       localStorage.setItem("currentUser", JSON.stringify(data.user));
       setUser(data.user);
 
-      // 🔥 ALSO update preview correctly after save
       if (data.user.image) {
         setPreview(`http://localhost:5001${data.user.image}`);
       }
 
       toast.success("Profile updated successfully");
-
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong");
@@ -88,17 +100,20 @@ export function Profile() {
     }
 
     try {
-      const res = await fetch("http://localhost:5001/api/auth/change-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: user.email,
-          currentPassword,
-          newPassword,
-        }),
-      });
+      const res = await fetch(
+        "http://localhost:5001/api/auth/change-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: user.email,
+            currentPassword,
+            newPassword,
+          }),
+        }
+      );
 
       const data = await res.json();
 
@@ -111,7 +126,6 @@ export function Profile() {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-
     } catch (err) {
       toast.error("Something went wrong");
     }
@@ -119,17 +133,15 @@ export function Profile() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-
       {/* HEADER */}
       <div className="bg-gradient-to-r from-blue-900 to-green-600 text-white p-8">
         <div className="max-w-6xl mx-auto flex items-center gap-6">
-
-          {/* PROFILE IMAGE */}
+          {/* IMAGE */}
           <div className="relative">
             <img
               src={
                 preview
-                  ? preview // ✅ FIX: no double URL
+                  ? preview
                   : "https://via.placeholder.com/100"
               }
               className="w-24 h-24 rounded-full border-4 border-white object-cover"
@@ -147,7 +159,6 @@ export function Profile() {
             <h1 className="text-3xl font-bold">{user?.name}</h1>
             <p className="text-sm opacity-80">{user?.email}</p>
           </div>
-
         </div>
       </div>
 
@@ -157,7 +168,10 @@ export function Profile() {
           {["profile", "orders", "security"].map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => {
+                setActiveTab(tab);
+                window.location.hash = tab; // 🔥 FIX
+              }}
               className={`py-4 border-b-2 ${
                 activeTab === tab
                   ? "border-orange-600 text-orange-600"
@@ -172,69 +186,66 @@ export function Profile() {
 
       {/* CONTENT */}
       <div className="max-w-6xl mx-auto p-6">
-
+        {/* PROFILE */}
         {activeTab === "profile" && (
           <div className="bg-white shadow rounded-lg p-6">
-
             <h3 className="text-lg font-semibold mb-6">
               Basic Information
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
               <div>
-                <label className="text-sm text-gray-600">Full Name</label>
+                <label className="text-sm text-gray-600">
+                  Full Name
+                </label>
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full border px-3 py-2 rounded-md mt-1 focus:ring-2 focus:ring-orange-500"
+                  className="w-full border px-3 py-2 rounded-md mt-1"
                 />
               </div>
 
               <div>
-                <label className="text-sm text-gray-600">Email</label>
+                <label className="text-sm text-gray-600">
+                  Email
+                </label>
                 <input
                   value={user?.email}
                   disabled
                   className="w-full border px-3 py-2 rounded-md mt-1 bg-gray-100"
                 />
               </div>
-
             </div>
 
             <div className="mt-6">
               <button
                 onClick={handleSave}
-                className="bg-orange-600 text-white px-6 py-2 rounded-md hover:bg-orange-700"
+                className="bg-orange-600 text-white px-6 py-2 rounded-md"
               >
                 Save Changes
               </button>
             </div>
-
           </div>
         )}
 
-        {activeTab === "orders" && (
-          <div className="bg-white p-6 rounded shadow">
-            <h3 className="text-lg font-semibold">My Orders</h3>
-            <p className="text-gray-500 mt-2">No orders yet</p>
-          </div>
-        )}
+        {/* ORDERS */}
+        {activeTab === "orders" && <UserOrders />}
 
+        {/* SECURITY */}
         {activeTab === "security" && (
           <div className="bg-white p-6 rounded shadow max-w-md">
-
             <h3 className="text-lg font-semibold mb-4">
               Change Password
             </h3>
 
             <div className="space-y-4">
-
               <input
                 type="password"
                 placeholder="Current Password"
                 value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
+                onChange={(e) =>
+                  setCurrentPassword(e.target.value)
+                }
                 className="w-full border px-3 py-2 rounded-md"
               />
 
@@ -242,7 +253,9 @@ export function Profile() {
                 type="password"
                 placeholder="New Password"
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={(e) =>
+                  setNewPassword(e.target.value)
+                }
                 className="w-full border px-3 py-2 rounded-md"
               />
 
@@ -250,23 +263,120 @@ export function Profile() {
                 type="password"
                 placeholder="Confirm New Password"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) =>
+                  setConfirmPassword(e.target.value)
+                }
                 className="w-full border px-3 py-2 rounded-md"
               />
 
               <button
                 onClick={handlePasswordUpdate}
-                className="w-full bg-orange-600 text-white py-2 rounded-md hover:bg-orange-700"
+                className="w-full bg-orange-600 text-white py-2 rounded-md"
               >
                 Update Password
               </button>
-
             </div>
-
           </div>
         )}
-
       </div>
+    </div>
+  );
+}
+
+// ✅ USER ORDERS COMPONENT
+function UserOrders() {
+  const { user } = useAuth();
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const userId = user?.id || user?._id;
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (!userId) return;
+
+      try {
+        setLoading(true);
+
+        const res = await fetch(
+          `http://localhost:5001/api/orders/user/${userId}`
+        );
+
+        if (!res.ok) throw new Error("Failed to fetch");
+
+        const data = await res.json();
+        setOrders(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [userId]);
+
+  const parseItems = (items) => {
+    if (!items) return [];
+    if (Array.isArray(items)) return items;
+
+    try {
+      return JSON.parse(items);
+    } catch {
+      return [];
+    }
+  };
+
+  return (
+    <div className="bg-white p-6 rounded shadow">
+      <h3 className="text-lg font-semibold mb-4">My Orders</h3>
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : orders.length === 0 ? (
+        <p>No orders yet</p>
+      ) : (
+        <div className="space-y-4">
+          {orders.map((order) => {
+            const items = parseItems(order.items);
+
+            return (
+              <div key={order.id} className="border p-4 rounded">
+                <div className="flex justify-between items-center mb-2">
+                  <p className="font-semibold">
+                    Order #{order.id}
+                  </p>
+
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      order.status === "approved"
+                        ? "bg-green-100 text-green-700"
+                        : order.status === "pending"
+                        ? "bg-yellow-100 text-yellow-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {order.status}
+                  </span>
+                </div>
+
+                {items.map((item, i) => (
+                  <div key={i} className="flex justify-between text-sm">
+                    <span>
+                      {item.partName} (x{item.quantity})
+                    </span>
+                    <span>${item.price}</span>
+                  </div>
+                ))}
+
+                <p className="font-semibold mt-2">
+                  Total: ${order.total}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

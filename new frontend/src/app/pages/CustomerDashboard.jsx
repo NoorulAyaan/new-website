@@ -2,12 +2,22 @@ import { useState, useEffect } from "react";
 import { PartsCard } from "../components/PartsCard";
 import { Search, Filter, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
+import { useCart } from "../context/CartContext"; // ✅ ADD THIS
+import { useNavigate } from "react-router-dom"; // ✅ ADD THIS
 
 export function CustomerDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [cart, setCart] = useState([]);
+
+  // ❌ REMOVE LOCAL CART STATE (NOW USING CONTEXT)
+  // const [cart, setCart] = useState([]);
+
   const [spareParts, setSpareParts] = useState([]);
+
+  // ✅ USE GLOBAL CART CONTEXT
+  const { cart, addToCart } = useCart();
+
+  const navigate = useNavigate(); // ✅ ADD THIS
 
   useEffect(() => {
     fetch("http://localhost:5001/api/parts")
@@ -53,8 +63,9 @@ export function CustomerDashboard() {
     return matchesSearch && matchesCategory;
   });
 
+  // 🔥 UPDATED HANDLER (NOW USING CONTEXT)
   const handleAddToCart = (part) => {
-    setCart([...cart, part]);
+    addToCart(part);
     toast.success(`${part.partName} added to cart!`);
   };
 
@@ -70,10 +81,18 @@ export function CustomerDashboard() {
               Shop Spare Parts
             </h1>
 
-            <div className="flex items-center space-x-2 bg-orange-100 px-4 py-2 rounded-lg">
+            {/* 🔥 CLICKABLE CART */}
+            <div
+              onClick={() => {
+                navigate("/cart");
+                window.location.reload();
+              }}
+              
+              className="cursor-pointer flex items-center space-x-2 bg-orange-100 px-4 py-2 rounded-lg hover:bg-orange-200 transition"
+            >
               <ShoppingCart className="h-5 w-5 text-orange-600" />
               <span className="font-semibold text-orange-600">
-                Cart: {cart.length} items
+                Cart: {cart.reduce((total, item) => total + item.quantity, 0)} items
               </span>
             </div>
           </div>

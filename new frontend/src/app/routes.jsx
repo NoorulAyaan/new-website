@@ -12,7 +12,13 @@ import { CustomerDashboard } from "./pages/CustomerDashboard";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { Profile } from "./pages/Profile";
 import AddPart from "./pages/AddPart";
-import EditPart from "./pages/EditPart"; // ✅ ADDED EDIT PAGE IMPORT
+import EditPart from "./pages/EditPart";
+import { CartPage } from "./pages/CartPage";
+import { CheckoutPage } from "./pages/CheckoutPage";
+import { AdminOrders } from "./pages/AdminOrders";
+
+// ❌ REMOVE THIS IMPORT (NOT NEEDED HERE)
+// import { CartProvider } from "./context/CartContext";
 
 import { useLocation } from "react-router-dom";
 
@@ -97,6 +103,22 @@ export const router = createBrowserRouter([
     ),
   },
   {
+    path: "/cart",
+    element: (
+      <Layout>
+        <CartPage />
+      </Layout>
+    ),
+  },
+  {
+    path: "/checkout",
+    element: (
+      <Layout>
+        <CheckoutPage />
+      </Layout>
+    ),
+  },
+  {
     path: "/profile",
     element: (
       <Layout>
@@ -112,6 +134,16 @@ export const router = createBrowserRouter([
       <Layout>
         <ProtectedRoute requireAdmin={true}>
           <AdminDashboard />
+        </ProtectedRoute>
+      </Layout>
+    ),
+  },
+  {
+    path: "/admin/orders",
+    element: (
+      <Layout>
+        <ProtectedRoute requireAdmin={true}>
+          <AdminOrders />
         </ProtectedRoute>
       </Layout>
     ),

@@ -5,6 +5,7 @@ const path = require("path"); // ✅ IMPORTANT
 const vehicleRoutes = require("./routes/vehicleRoutes");
 const partsRoutes = require("./routes/partsRoutes");
 const brandRoutes = require("./routes/brandRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 require("dotenv").config();
 
 // 🔥 ROUTES
@@ -47,6 +48,9 @@ const PORT = process.env.PORT || 5001;
 
 // BRANDS API
 app.use("/api/brands", brandRoutes);
+
+// ORDERS API
+app.use("/api/orders", orderRoutes);
 
 // 🚀 START SERVER
 app.listen(PORT, () => {

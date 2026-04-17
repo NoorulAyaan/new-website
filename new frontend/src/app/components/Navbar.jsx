@@ -23,6 +23,9 @@ export function Navbar() {
         : `http://localhost:5001${user.image}`
       : "https://via.placeholder.com/30";
 
+  // 🔔 TEMP: STATIC ORDER COUNT (later we will connect backend)
+  const orderCount = 3;
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -82,13 +85,31 @@ export function Navbar() {
               <>
                 {/* Shop / Admin */}
                 {isAdmin ? (
-                  <Link
-                    to="/admin"
-                    className="flex items-center space-x-1 hover:text-orange-500 transition-colors cursor-pointer"
-                  >
-                    <Wrench className="h-5 w-5" />
-                    <span>Admin Panel</span>
-                  </Link>
+                  <div className="flex items-center space-x-4">
+                    {/* ADMIN PANEL */}
+                    <Link
+                      to="/admin"
+                      className="flex items-center space-x-1 hover:text-orange-500 transition-colors cursor-pointer"
+                    >
+                      <Wrench className="h-5 w-5" />
+                      <span>Admin Panel</span>
+                    </Link>
+
+                    {/* 🔔 ADMIN ORDERS WITH BADGE */}
+                    <button
+                      onClick={() => navigate("/admin/orders")}
+                      className="relative hover:text-orange-500 transition-colors cursor-pointer"
+                    >
+                      Orders
+
+                      {/* 🔴 BADGE */}
+                      {orderCount > 0 && (
+                        <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-1.5 rounded-full">
+                          {orderCount}
+                        </span>
+                      )}
+                    </button>
+                  </div>
                 ) : (
                   <Link
                     to="/shop"
@@ -125,15 +146,7 @@ export function Navbar() {
                         Profile Setting
                       </button>
 
-                      <button
-                        onClick={() => {
-                          navigate("/orders");
-                          setOpen(false);
-                        }}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                      >
-                        My Orders
-                      </button>
+                      {/* ❌ REMOVED WRONG "My Orders" */}
 
                       <button
                         onClick={() => {
