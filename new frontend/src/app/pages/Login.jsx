@@ -6,6 +6,7 @@ import { Wrench, Mail, Lock, User } from "lucide-react";
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // ✅ ADDED
   const [error, setError] = useState("");
   const { setUser } = useAuth();
   const navigate = useNavigate();
@@ -20,7 +21,6 @@ export function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        // ✅ Removed role from request
         body: JSON.stringify({ email, password }),
       });
 
@@ -31,11 +31,9 @@ export function Login() {
         return;
       }
 
-      // Save user
       localStorage.setItem("currentUser", JSON.stringify(data.user));
       setUser(data.user);
 
-      // Redirect based on role (same as before)
       if (data.user.role === "admin") {
         navigate("/admin");
       } else {
@@ -48,77 +46,90 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-[#eef3fb] flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full mx-auto">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <Wrench className="h-12 w-12 text-orange-600" />
+            <Wrench className="h-12 w-12 text-[#2678ff]" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
-          <p className="text-gray-600 mt-2">Sign in to your account</p>
+          <h2 className="text-3xl font-bold text-[#0f172a]">Welcome Back</h2>
+          <p className="text-slate-500 mt-2">Sign in to your account</p>
         </div>
 
-        {/* ✅ Single Login Form */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-sm rounded-[20px] shadow-[0_15px_40px_rgba(15,23,42,0.08)] border border-[#d9e5f6] p-8 space-y-6">
           
           <div className="flex justify-center mb-2">
-            <User className="h-8 w-8 text-orange-600" />
+            <User className="h-8 w-8 text-[#2678ff]" />
           </div>
 
-          <h3
-            className="text-xl font-normal text-gray-900 text-center mb-2"
-            style={{ fontFamily: 'inherit', fontWeight: 400 }}
-          >
+          <h3 className="text-xl font-normal text-[#0f172a] text-center mb-2">
             Login
           </h3>
 
-          <p
-            className="text-gray-600 text-sm text-center mb-4"
-            style={{ fontFamily: 'inherit', fontWeight: 400 }}
-          >
+          <p className="text-slate-500 text-sm text-center mb-4">
             Access your account
           </p>
 
+          {/* EMAIL */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-600 mb-2">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
               <input
-                id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-[#d9e5f6] rounded-lg focus:ring-2 focus:ring-[#2678ff] focus:border-transparent"
                 placeholder="Enter your email"
                 required
               />
             </div>
           </div>
 
+          {/* PASSWORD */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-600 mb-2">
               Password
             </label>
+
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
+
               <input
-                id="password"
-                type="password"
+                type={showPassword ? "text" : "password"} // ✅ UPDATED
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full pl-10 pr-16 py-2 border border-[#d9e5f6] rounded-lg focus:ring-2 focus:ring-[#2678ff] focus:border-transparent"
                 placeholder="••••••••"
                 required
               />
+
+              {/* SHOW / HIDE BUTTON */}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+
+            {/* FORGOT PASSWORD */}
+            <div className="text-right mt-2">
+              <Link
+                to="/forgot-password"
+                className="text-sm text-[#2678ff] hover:underline"
+              >
+                Forgot Password?
+              </Link>
             </div>
           </div>
 
           <button
             type="submit"
-            className="w-full py-2 rounded-md font-medium text-base transition-colors bg-orange-600 hover:bg-orange-700 text-white"
-            style={{ fontFamily: 'inherit', fontWeight: 400 }}
+            className="w-full py-2 rounded-full font-medium text-base transition bg-gradient-to-r from-[#16c3ff] to-[#2678ff] hover:opacity-90 text-white shadow-[0_12px_30px_rgba(37,117,255,0.3)] cursor-pointer"
           >
             Sign In
           </button>
@@ -131,15 +142,15 @@ export function Login() {
         </form>
 
         <div className="mt-8 text-center">
-          <p className="text-gray-600">
+          <p className="text-slate-500">
             Don't have an account?{" "}
-            <Link to="/signup" className="text-orange-600 hover:text-orange-700 font-semibold">
+            <Link to="/signup" className="text-[#2678ff] hover:opacity-80 font-semibold">
               Sign up
             </Link>
           </p>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-gray-200"></div>
+        <div className="mt-8 pt-6 border-t border-[#d9e5f6]"></div>
       </div>
     </div>
   );

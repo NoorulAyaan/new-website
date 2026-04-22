@@ -103,13 +103,13 @@ export function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-200">
+    <div className="min-h-screen bg-[#eef3fb]">
 
       {/* HEADER */}
-      <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white shadow-md">
-        <div className="max-w-6xl mx-auto px-6 py-10">
-          <h1 className="text-3xl font-semibold mb-1">Admin Dashboard</h1>
-          <p className="text-gray-300 text-sm">
+      <div className="bg-gradient-to-r from-[#081733] to-[#0f2a5c] text-white shadow-[0_12px_30px_rgba(2,6,23,0.25)]">
+        <div className="max-w-6xl mx-auto px-6 py-14">
+          <h1 className="text-4xl font-bold mb-2">Admin Dashboard</h1>
+          <p className="text-slate-300 text-sm">
             Search and manage vehicle spare parts
           </p>
         </div>
@@ -119,23 +119,23 @@ export function AdminDashboard() {
       <div className="max-w-6xl mx-auto px-6 py-10">
 
         {/* SEARCH CARD */}
-        <div className="bg-white rounded-xl shadow-md border border-gray-200 p-6 mb-10">
+        <div className="bg-white/80 backdrop-blur-md rounded-[24px] shadow-[0_20px_50px_rgba(15,23,42,0.08)] border border-[#d9e5f6] p-6 mb-10">
 
-          <h2 className="text-lg font-semibold text-gray-800 mb-6">
+          <h2 className="text-lg font-semibold text-[#0f172a] mb-6 flex items-center gap-2">
+            <Search className="w-4 h-4 text-[#2678ff]" />
             Find Parts
           </h2>
 
           {/* FILTER GRID */}
           <div className="grid md:grid-cols-4 gap-5">
 
-            {/* BRAND */}
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Brand</label>
+              <label className="text-xs text-slate-500 mb-1 block">Brand</label>
               <select
                 name="brand_id"
                 value={form.brand_id}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-gray-800"
+                className="w-full border border-[#d9e5f6] rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2678ff] outline-none"
               >
                 <option value="">Select</option>
                 {brands.map((b) => (
@@ -144,39 +144,36 @@ export function AdminDashboard() {
               </select>
             </div>
 
-            {/* VEHICLE */}
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Vehicle</label>
+              <label className="text-xs text-slate-500 mb-1 block">Vehicle</label>
               <input
                 name="vehicle_name"
                 value={form.vehicle_name}
                 onChange={handleChange}
                 placeholder="e.g. Corolla"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-gray-800"
+                className="w-full border border-[#d9e5f6] rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2678ff]"
               />
             </div>
 
-            {/* PART */}
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Part Name</label>
+              <label className="text-xs text-slate-500 mb-1 block">Part Name</label>
               <input
                 name="name"
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Brake Pad"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-gray-800"
+                className="w-full border border-[#d9e5f6] rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2678ff]"
               />
             </div>
 
-            {/* YEAR */}
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Year</label>
+              <label className="text-xs text-slate-500 mb-1 block">Year</label>
               <input
                 name="year"
                 value={form.year}
                 onChange={handleChange}
                 placeholder="2022"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-gray-800"
+                className="w-full border border-[#d9e5f6] rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2678ff]"
               />
             </div>
 
@@ -187,7 +184,7 @@ export function AdminDashboard() {
 
             <button
               onClick={handleSearch}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-md text-sm font-medium transition shadow-sm"
+              className="bg-gradient-to-r from-[#16c3ff] to-[#2678ff] hover:opacity-90 text-white px-6 py-2 rounded-full text-sm font-medium shadow-[0_10px_25px_rgba(37,117,255,0.3)] cursor-pointer"
             >
               Search
             </button>
@@ -198,86 +195,105 @@ export function AdminDashboard() {
                 navigate("/add-part");
                 window.location.reload();
               }}
-              className="bg-gray-900 hover:bg-black text-white px-5 py-2 rounded-md text-sm font-medium transition"
+              className="bg-[#0f172a] hover:bg-black text-white px-6 py-2 rounded-full text-sm font-medium shadow cursor-pointer"
             >
               + Add Part
             </button>
 
             <button
               onClick={handleReset}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2 rounded-md text-sm transition border"
+              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-full text-sm border cursor-pointer"
             >
               Reset
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                navigate("/obd-codes");
+                window.location.reload();
+              }}
+              className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-2 rounded-full text-sm font-medium shadow cursor-pointer"
+            >
+              OBD Codes
             </button>
           </div>
         </div>
 
         {/* RESULTS HEADER */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-800">
+          <h2 className="text-xl font-semibold text-[#0f172a]">
             Parts ({parts.length})
           </h2>
         </div>
 
         {/* EMPTY STATE */}
         {parts.length === 0 ? (
-          <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-
-            <p className="text-gray-400 text-sm">
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-[#d9e5f6] p-12 text-center">
+            <p className="text-slate-400 text-sm">
               No parts found. Try adjusting your filters.
             </p>
-
           </div>
         ) : (
 
-          /* GRID */
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
             {parts.map((p) => (
               <div
                 key={p.id}
-                className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition overflow-hidden"
+                className="bg-white/80 backdrop-blur-sm rounded-[22px] border border-[#d9e5f6] shadow-[0_12px_30px_rgba(15,23,42,0.08)] hover:shadow-[0_18px_40px_rgba(15,23,42,0.12)] transition overflow-hidden"
               >
 
-                {/* IMAGE */}
                 {p.image ? (
                   <img
                     src={`http://localhost:5001${p.image}`}
                     className="h-48 w-full object-cover"
                   />
                 ) : (
-                  <div className="h-48 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+                  <div className="h-48 bg-[#e6eefb] flex items-center justify-center text-slate-400 text-sm">
                     No Image
                   </div>
                 )}
 
-                {/* DETAILS */}
-                <div className="p-4">
+                <div className="p-5">
 
-                  <h3 className="text-md font-semibold text-gray-900 mb-1">
+                  <h3 className="text-md font-semibold text-[#0f172a] mb-1">
                     {p.part_name}
                   </h3>
 
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-slate-500">
                     {p.brand_name} • {p.vehicle_name}
                   </p>
 
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-slate-500 mt-1">
                     Year: {p.year}
                   </p>
 
-                  <div className="flex justify-between mt-3 text-sm text-gray-700">
-                    <span>💰 {p.price}</span>
-                    <span>📦 {p.stock}</span>
+                  {/* UPDATED DESIGN */}
+                  <div className="flex justify-between mt-3 items-center">
+
+                    <span className="text-lg font-bold text-[#2678ff]">
+                      PKR {p.price}
+                    </span>
+
+                    <span
+                      className={`text-xs px-2 py-1 rounded-full font-medium ${
+                        p.stock > 10
+                          ? "bg-green-100 text-green-600"
+                          : "bg-orange-100 text-orange-600"
+                      }`}
+                    >
+                      {p.stock > 10 ? "In Stock" : `${p.stock} left`}
+                    </span>
+
                   </div>
 
                   {p.part_number && (
-                    <p className="text-xs text-gray-400 mt-2">
+                    <p className="text-xs text-slate-400 mt-2">
                       Part#: {p.part_number}
                     </p>
                   )}
 
-                  {/* ACTIONS */}
                   <div className="flex gap-2 mt-4">
 
                     <button
@@ -286,7 +302,7 @@ export function AdminDashboard() {
                         navigate("/add-part", { state: p });
                         window.location.reload();
                       }}
-                      className="flex-1 bg-gray-900 hover:bg-black text-white py-1.5 rounded text-sm transition"
+                      className="flex-1 bg-gradient-to-r from-[#16c3ff] to-[#2678ff] hover:opacity-90 text-white py-2 rounded-full text-sm font-medium shadow-[0_10px_25px_rgba(37,117,255,0.3)]"
                     >
                       Edit
                     </button>
@@ -294,7 +310,7 @@ export function AdminDashboard() {
                     <button
                       type="button"
                       onClick={() => handleDelete(p.id)}
-                      className="flex-1 bg-red-500 hover:bg-red-600 text-white py-1.5 rounded text-sm transition"
+                      className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-full text-sm font-medium shadow"
                     >
                       Delete
                     </button>

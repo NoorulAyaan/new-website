@@ -28,7 +28,11 @@ exports.createOrder = async (req, res) => {
 
     const cleanItems = items.map((item) => ({
       id: item.id,
-      partName: item.partName || item.name, // safe fallback
+      partName: item.partName || item.name,
+      partNumber: item.partNumber || null,
+      vehicle_name: item.vehicle_name || null,
+      brand_name: item.brand_name || null,
+      year: item.year || null,
       price: item.price,
       quantity: item.quantity,
     }));

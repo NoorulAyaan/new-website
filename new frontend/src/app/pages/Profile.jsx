@@ -132,9 +132,9 @@ export function Profile() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-[#eef3fb] min-h-screen">
       {/* HEADER */}
-      <div className="bg-gradient-to-r from-blue-900 to-green-600 text-white p-8">
+      <div className="bg-gradient-to-r from-[#081733] to-[#0f2a5c] text-white p-10 shadow-[0_20px_50px_rgba(2,6,23,0.3)]">
         <div className="max-w-6xl mx-auto flex items-center gap-6">
           {/* IMAGE */}
           <div className="relative">
@@ -144,10 +144,10 @@ export function Profile() {
                   ? preview
                   : "https://via.placeholder.com/100"
               }
-              className="w-24 h-24 rounded-full border-4 border-white object-cover"
+              className="w-24 h-24 rounded-full border-4 border-white object-cover shadow-lg"
             />
 
-            <label className="absolute bottom-0 right-0 bg-white text-black p-1 rounded-full cursor-pointer text-xs">
+            <label className="absolute bottom-0 right-0 bg-white text-[#0f172a] p-1 rounded-full cursor-pointer text-xs shadow">
               ✎
               <input type="file" hidden onChange={handleImageChange} />
             </label>
@@ -155,15 +155,15 @@ export function Profile() {
 
           {/* USER INFO */}
           <div>
-            <h2 className="text-xl">Welcome,</h2>
+            <h2 className="text-xl text-blue-100">Welcome,</h2>
             <h1 className="text-3xl font-bold">{user?.name}</h1>
-            <p className="text-sm opacity-80">{user?.email}</p>
+            <p className="text-sm text-blue-200">{user?.email}</p>
           </div>
         </div>
       </div>
 
       {/* TABS */}
-      <div className="bg-white border-b">
+      <div className="bg-white/80 backdrop-blur-sm border-b border-[#d9e5f6]">
         <div className="max-w-6xl mx-auto flex space-x-6 px-6">
           {["profile", "orders", "security"].map((tab) => (
             <button
@@ -174,8 +174,8 @@ export function Profile() {
               }}
               className={`py-4 border-b-2 ${
                 activeTab === tab
-                  ? "border-orange-600 text-orange-600"
-                  : "border-transparent text-gray-600"
+                  ? "border-[#2678ff] text-[#2678ff]"
+                  : "border-transparent text-gray-500 hover:text-[#2678ff]"
               }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -188,31 +188,31 @@ export function Profile() {
       <div className="max-w-6xl mx-auto p-6">
         {/* PROFILE */}
         {activeTab === "profile" && (
-          <div className="bg-white shadow rounded-lg p-6">
-            <h3 className="text-lg font-semibold mb-6">
+          <div className="bg-white/80 backdrop-blur-sm shadow-[0_15px_40px_rgba(15,23,42,0.08)] border border-[#d9e5f6] rounded-[20px] p-6">
+            <h3 className="text-lg font-semibold mb-6 text-[#0f172a]">
               Basic Information
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="text-sm text-gray-600">
+                <label className="text-sm text-slate-600">
                   Full Name
                 </label>
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full border px-3 py-2 rounded-md mt-1"
+                  className="w-full border border-[#d9e5f6] px-3 py-2 rounded-lg mt-1 focus:ring-2 focus:ring-[#2678ff]"
                 />
               </div>
 
               <div>
-                <label className="text-sm text-gray-600">
+                <label className="text-sm text-slate-600">
                   Email
                 </label>
                 <input
                   value={user?.email}
                   disabled
-                  className="w-full border px-3 py-2 rounded-md mt-1 bg-gray-100"
+                  className="w-full border border-[#d9e5f6] px-3 py-2 rounded-lg mt-1 bg-[#f1f5f9]"
                 />
               </div>
             </div>
@@ -220,7 +220,7 @@ export function Profile() {
             <div className="mt-6">
               <button
                 onClick={handleSave}
-                className="bg-orange-600 text-white px-6 py-2 rounded-md"
+                className="bg-gradient-to-r from-[#16c3ff] to-[#2678ff] text-white px-6 py-2 rounded-full shadow hover:opacity-90"
               >
                 Save Changes
               </button>
@@ -233,8 +233,8 @@ export function Profile() {
 
         {/* SECURITY */}
         {activeTab === "security" && (
-          <div className="bg-white p-6 rounded shadow max-w-md">
-            <h3 className="text-lg font-semibold mb-4">
+          <div className="bg-white/80 backdrop-blur-sm p-6 rounded-[20px] shadow border border-[#d9e5f6] max-w-md">
+            <h3 className="text-lg font-semibold mb-4 text-[#0f172a]">
               Change Password
             </h3>
 
@@ -246,7 +246,7 @@ export function Profile() {
                 onChange={(e) =>
                   setCurrentPassword(e.target.value)
                 }
-                className="w-full border px-3 py-2 rounded-md"
+                className="w-full border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff]"
               />
 
               <input
@@ -256,7 +256,7 @@ export function Profile() {
                 onChange={(e) =>
                   setNewPassword(e.target.value)
                 }
-                className="w-full border px-3 py-2 rounded-md"
+                className="w-full border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff]"
               />
 
               <input
@@ -266,12 +266,12 @@ export function Profile() {
                 onChange={(e) =>
                   setConfirmPassword(e.target.value)
                 }
-                className="w-full border px-3 py-2 rounded-md"
+                className="w-full border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff]"
               />
 
               <button
                 onClick={handlePasswordUpdate}
-                className="w-full bg-orange-600 text-white py-2 rounded-md"
+                className="w-full bg-gradient-to-r from-[#16c3ff] to-[#2678ff] text-white py-2 rounded-full hover:opacity-90"
               >
                 Update Password
               </button>
@@ -328,22 +328,22 @@ function UserOrders() {
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow">
-      <h3 className="text-lg font-semibold mb-4">My Orders</h3>
+    <div className="bg-white/80 backdrop-blur-sm p-6 rounded-[20px] shadow border border-[#d9e5f6]">
+      <h3 className="text-lg font-semibold mb-4 text-[#0f172a]">My Orders</h3>
 
       {loading ? (
-        <p>Loading...</p>
+        <p className="text-slate-500">Loading...</p>
       ) : orders.length === 0 ? (
-        <p>No orders yet</p>
+        <p className="text-slate-500">No orders yet</p>
       ) : (
         <div className="space-y-4">
           {orders.map((order) => {
             const items = parseItems(order.items);
 
             return (
-              <div key={order.id} className="border p-4 rounded">
+              <div key={order.id} className="border border-[#d9e5f6] p-4 rounded-[14px] bg-[#f8fbff]">
                 <div className="flex justify-between items-center mb-2">
-                  <p className="font-semibold">
+                  <p className="font-semibold text-[#0f172a]">
                     Order #{order.id}
                   </p>
 
@@ -361,7 +361,7 @@ function UserOrders() {
                 </div>
 
                 {items.map((item, i) => (
-                  <div key={i} className="flex justify-between text-sm">
+                  <div key={i} className="flex justify-between text-sm text-slate-600">
                     <span>
                       {item.partName} (x{item.quantity})
                     </span>
@@ -369,7 +369,7 @@ function UserOrders() {
                   </div>
                 ))}
 
-                <p className="font-semibold mt-2">
+                <p className="font-semibold mt-2 text-[#0f172a]">
                   Total: ${order.total}
                 </p>
               </div>

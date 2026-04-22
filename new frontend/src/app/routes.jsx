@@ -16,9 +16,11 @@ import EditPart from "./pages/EditPart";
 import { CartPage } from "./pages/CartPage";
 import { CheckoutPage } from "./pages/CheckoutPage";
 import { AdminOrders } from "./pages/AdminOrders";
+import { ForgotPassword } from "./pages/ForgotPassword";
+import { VerifyCode } from "./pages/VerifyCode";
+import { ResetPassword } from "./pages/ResetPassword";
+import { ObdCodePage } from "./pages/ObdCodePage";
 
-// ❌ REMOVE THIS IMPORT (NOT NEEDED HERE)
-// import { CartProvider } from "./context/CartContext";
 
 import { useLocation } from "react-router-dom";
 
@@ -90,6 +92,36 @@ export const router = createBrowserRouter([
       <Layout>
         <AuthRoute>
           <Signup />
+        </AuthRoute>
+      </Layout>
+    ),
+  },
+  {
+    path: "/forgot-password",
+    element: (
+      <Layout>
+        <AuthRoute>
+          <ForgotPassword />
+        </AuthRoute>
+      </Layout>
+    ),
+  },
+  {
+    path: "/verify-code",
+    element: (
+      <Layout>
+        <AuthRoute>
+          <VerifyCode />
+        </AuthRoute>
+      </Layout>
+    ),
+  },
+  {
+    path: "/reset-password",
+    element: (
+      <Layout>
+        <AuthRoute>
+          <ResetPassword />
         </AuthRoute>
       </Layout>
     ),
@@ -181,6 +213,14 @@ export const router = createBrowserRouter([
     element: (
       <Layout>
         <Services />
+      </Layout>
+    ),
+  },
+  {
+    path: "/obd-codes",
+    element: (
+      <Layout>
+        <ObdCodePage />
       </Layout>
     ),
   },

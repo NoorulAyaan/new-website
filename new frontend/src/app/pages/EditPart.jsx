@@ -92,15 +92,21 @@ export default function EditPart() {
 
   // ✅ LOADING STATE
   if (loading) {
-    return <div className="p-10 text-center">Loading...</div>;
+    return (
+      <div className="min-h-screen bg-[#eef3fb] flex items-center justify-center">
+        <div className="text-slate-500 text-lg">Loading...</div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-10">
+    <div className="min-h-screen bg-[#eef3fb] py-12 px-4">
 
-      <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow">
+      <div className="max-w-3xl mx-auto bg-white/80 backdrop-blur-sm p-8 rounded-[22px] shadow-[0_15px_40px_rgba(15,23,42,0.08)] border border-[#d9e5f6]">
 
-        <h2 className="text-2xl font-bold mb-6">Edit Part</h2>
+        <h2 className="text-2xl font-bold text-[#0f172a] mb-6">
+          Edit Part
+        </h2>
 
         <form onSubmit={handleUpdate} className="grid gap-4">
 
@@ -109,7 +115,7 @@ export default function EditPart() {
             value={form.name}
             onChange={handleChange}
             placeholder="Part Name"
-            className="border p-2 rounded"
+            className="border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff] outline-none"
           />
 
           <input
@@ -117,7 +123,7 @@ export default function EditPart() {
             value={form.vehicle_name}
             onChange={handleChange}
             placeholder="Vehicle"
-            className="border p-2 rounded"
+            className="border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff]"
           />
 
           <input
@@ -125,7 +131,7 @@ export default function EditPart() {
             value={form.year}
             onChange={handleChange}
             placeholder="Year"
-            className="border p-2 rounded"
+            className="border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff]"
           />
 
           <input
@@ -133,7 +139,7 @@ export default function EditPart() {
             value={form.engine_details}
             onChange={handleChange}
             placeholder="Engine"
-            className="border p-2 rounded"
+            className="border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff]"
           />
 
           <input
@@ -141,7 +147,7 @@ export default function EditPart() {
             value={form.price}
             onChange={handleChange}
             placeholder="Price"
-            className="border p-2 rounded"
+            className="border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff]"
           />
 
           <input
@@ -149,7 +155,7 @@ export default function EditPart() {
             value={form.stock}
             onChange={handleChange}
             placeholder="Stock"
-            className="border p-2 rounded"
+            className="border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff]"
           />
 
           <input
@@ -157,10 +163,10 @@ export default function EditPart() {
             value={form.part_number}
             onChange={handleChange}
             placeholder="Part Number"
-            className="border p-2 rounded"
+            className="border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff]"
           />
 
-          <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">
+          <button className="mt-2 bg-gradient-to-r from-[#16c3ff] to-[#2678ff] hover:opacity-90 text-white py-2.5 rounded-full font-semibold shadow-[0_12px_30px_rgba(37,117,255,0.3)] transition">
             Update Part
           </button>
 

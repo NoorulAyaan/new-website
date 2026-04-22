@@ -69,7 +69,6 @@ export default function AddPart() {
 
     try {
       let res;
-
       const formData = new FormData();
 
       Object.keys(form).forEach((key) => {
@@ -85,10 +84,7 @@ export default function AddPart() {
       if (isEditMode) {
         res = await fetch(
           `http://localhost:5001/api/parts/${editData.id}`,
-          {
-            method: "PUT",
-            body: formData,
-          }
+          { method: "PUT", body: formData }
         );
       } else {
         res = await fetch("http://localhost:5001/api/parts", {
@@ -98,7 +94,6 @@ export default function AddPart() {
       }
 
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.message);
 
       setMessage(
@@ -116,31 +111,30 @@ export default function AddPart() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 relative">
+    <div className="min-h-screen bg-[#eef3fb] py-12 px-4 relative">
 
       {/* BACKGROUND */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100 -z-10"></div>
-      <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-[600px] h-[300px] bg-white opacity-40 blur-3xl -z-10"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-[#eef3fb] via-[#f6faff] to-[#e6f0ff] -z-10"></div>
+      <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-[600px] h-[300px] bg-[#cfe3ff] opacity-30 blur-3xl -z-10"></div>
 
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md p-8">
+      <div className="max-w-4xl mx-auto bg-white/80 backdrop-blur-sm rounded-[22px] shadow-[0_20px_50px_rgba(15,23,42,0.1)] border border-[#d9e5f6] p-8">
 
-        {/* 🔥 HEADER WITH BACK BUTTON */}
-        <div className="mb-8 border-b pb-4">
+        {/* HEADER */}
+        <div className="mb-8 border-b border-[#e2e8f0] pb-4">
 
-          {/* BACK BUTTON */}
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="flex items-center gap-1 text-sm text-gray-600 hover:text-black mb-2 transition"
+            className="flex items-center gap-1 text-sm text-slate-600 hover:text-[#2678ff] mb-2 transition"
           >
             ← Back
           </button>
 
-          <h2 className="text-2xl font-semibold text-gray-900">
+          <h2 className="text-2xl font-bold text-[#0f172a]">
             {isEditMode ? "Edit Part" : "Add New Part"}
           </h2>
 
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-slate-500 mt-1">
             Manage vehicle spare parts with accurate details
           </p>
         </div>
@@ -149,12 +143,12 @@ export default function AddPart() {
 
           {/* BRAND */}
           <div>
-            <label className="text-sm text-gray-700 font-medium">Brand</label>
+            <label className="text-sm text-slate-600 font-medium">Brand</label>
             <select
               name="brand_id"
               value={form.brand_id}
               onChange={handleChange}
-              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+              className="w-full mt-1 border border-[#d9e5f6] rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2678ff]"
             >
               <option value="">Select Brand</option>
               {brands.map((b) => (
@@ -165,91 +159,91 @@ export default function AddPart() {
 
           {/* VEHICLE */}
           <div>
-            <label className="text-sm text-gray-700 font-medium">Vehicle</label>
+            <label className="text-sm text-slate-600 font-medium">Vehicle</label>
             <input
               name="vehicle_name"
               value={form.vehicle_name}
               onChange={handleChange}
               placeholder="e.g. Camry"
-              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+              className="w-full mt-1 border border-[#d9e5f6] rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2678ff]"
             />
           </div>
 
           {/* PART NAME */}
           <div>
-            <label className="text-sm text-gray-700 font-medium">Part Name</label>
+            <label className="text-sm text-slate-600 font-medium">Part Name</label>
             <input
               name="name"
               value={form.name}
               onChange={handleChange}
               placeholder="Brake Pad"
-              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+              className="w-full mt-1 border border-[#d9e5f6] rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2678ff]"
             />
           </div>
 
           {/* YEAR */}
           <div>
-            <label className="text-sm text-gray-700 font-medium">Year</label>
+            <label className="text-sm text-slate-600 font-medium">Year</label>
             <input
               name="year"
               value={form.year}
               onChange={handleChange}
               placeholder="2022"
-              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+              className="w-full mt-1 border border-[#d9e5f6] rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2678ff]"
             />
           </div>
 
           {/* ENGINE */}
           <div>
-            <label className="text-sm text-gray-700 font-medium">Engine</label>
+            <label className="text-sm text-slate-600 font-medium">Engine</label>
             <input
               name="engine_details"
               value={form.engine_details}
               onChange={handleChange}
               placeholder="1.8L"
-              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+              className="w-full mt-1 border border-[#d9e5f6] rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2678ff]"
             />
           </div>
 
           {/* PRICE */}
           <div>
-            <label className="text-sm text-gray-700 font-medium">Price</label>
+            <label className="text-sm text-slate-600 font-medium">Price</label>
             <input
               name="price"
               value={form.price}
               onChange={handleChange}
               placeholder="4000"
-              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+              className="w-full mt-1 border border-[#d9e5f6] rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2678ff]"
             />
           </div>
 
           {/* STOCK */}
           <div>
-            <label className="text-sm text-gray-700 font-medium">Stock</label>
+            <label className="text-sm text-slate-600 font-medium">Stock</label>
             <input
               name="stock"
               value={form.stock}
               onChange={handleChange}
               placeholder="10"
-              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+              className="w-full mt-1 border border-[#d9e5f6] rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2678ff]"
             />
           </div>
 
           {/* PART NUMBER */}
           <div>
-            <label className="text-sm text-gray-700 font-medium">Part Number</label>
+            <label className="text-sm text-slate-600 font-medium">Part Number</label>
             <input
               name="part_number"
               value={form.part_number}
               onChange={handleChange}
               placeholder="Optional"
-              className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-800"
+              className="w-full mt-1 border border-[#d9e5f6] rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2678ff]"
             />
           </div>
 
           {/* FILE */}
           <div className="md:col-span-2">
-            <label className="text-sm text-gray-700 font-medium block mb-1">
+            <label className="text-sm text-slate-600 font-medium block mb-1">
               Upload Image
             </label>
 
@@ -263,12 +257,12 @@ export default function AddPart() {
             <div className="flex items-center gap-3">
               <label
                 htmlFor="fileUpload"
-                className="cursor-pointer bg-gray-900 text-white px-4 py-2 rounded-md text-sm hover:bg-black transition"
+                className="cursor-pointer bg-gradient-to-r from-[#16c3ff] to-[#2678ff] text-white px-4 py-2 rounded-full text-sm shadow-[0_10px_25px_rgba(37,117,255,0.3)]"
               >
                 Choose File
               </label>
 
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-slate-500">
                 {image ? image.name : "No file selected"}
               </span>
             </div>
@@ -277,7 +271,7 @@ export default function AddPart() {
               <img
                 src={URL.createObjectURL(image)}
                 alt="preview"
-                className="mt-3 h-20 rounded-md border"
+                className="mt-3 h-20 rounded-lg border border-[#d9e5f6]"
               />
             )}
           </div>
@@ -286,7 +280,7 @@ export default function AddPart() {
           <div className="md:col-span-2">
             <button
               type="submit"
-              className="w-full bg-orange-500 hover:bg-orange-600 transition text-white font-medium py-3 rounded-md"
+              className="w-full bg-gradient-to-r from-[#16c3ff] to-[#2678ff] hover:opacity-90 text-white font-semibold py-3 rounded-full shadow-[0_12px_30px_rgba(37,117,255,0.3)]"
             >
               {isEditMode ? "Update Part" : "Add Part"}
             </button>

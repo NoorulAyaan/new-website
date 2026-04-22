@@ -11,7 +11,6 @@ export function CheckoutPage() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // ✅ NEW CUSTOMER FIELDS
   const [customer, setCustomer] = useState({
     name: "",
     email: "",
@@ -28,7 +27,6 @@ export function CheckoutPage() {
   const handleSubmit = async () => {
     const userId = user?.id || user?._id;
 
-    // 🔴 VALIDATIONS
     if (!userId) {
       alert("User not loaded properly. Please login again.");
       return;
@@ -44,7 +42,6 @@ export function CheckoutPage() {
       return;
     }
 
-    // ✅ NEW VALIDATION
     if (!customer.name || !customer.phone || !customer.address) {
       alert("Please fill required customer details");
       return;
@@ -53,7 +50,6 @@ export function CheckoutPage() {
     try {
       setLoading(true);
 
-      // 🔥 STEP 1: SAFE FETCH APPROVED ORDERS
       let approvedOrders = [];
 
       try {
@@ -72,7 +68,6 @@ export function CheckoutPage() {
         console.warn("Skipping duplicate check (API issue)");
       }
 
-      // 🔥 STEP 2: CHECK DUPLICATE ITEMS
       for (const order of approvedOrders) {
         let purchasedItems = [];
 
@@ -95,14 +90,12 @@ export function CheckoutPage() {
         }
       }
 
-      // 🔥 STEP 3: SEND ORDER (EXTENDED)
       const formData = new FormData();
       formData.append("receipt", file);
       formData.append("items", JSON.stringify(cart));
       formData.append("total", total);
       formData.append("user_id", userId);
 
-      // ✅ NEW DATA
       formData.append("name", customer.name);
       formData.append("email", customer.email);
       formData.append("phone", customer.phone);
@@ -136,93 +129,105 @@ export function CheckoutPage() {
   };
 
   return (
-    <div className="p-8">
+    <div className="min-h-screen bg-[#eef3fb] py-10 px-4">
 
-      <h2 className="text-2xl font-bold mb-4">Checkout</h2>
+      <div className="max-w-3xl mx-auto">
 
-      {/* 💳 PAYMENT DETAILS */}
-      <div className="bg-white p-4 rounded shadow mb-6">
-        <p><strong>Easypaisa:</strong> 03423432443</p>
-        <p>Account Title: NOOR UL AMEEN</p>
-        <p><strong>Soneri Bank:</strong> 002520009149059</p>
-        <p>Account Title: NOOR UL AYAN</p>
-        <p className="text-red-500 mt-2">
-          Send exact amount: RS.{total}
-        </p>
+        {/* HEADER */}
+        <h2 className="text-3xl font-bold text-[#0f172a] mb-6">
+          Checkout
+        </h2>
+
+        {/* 💳 PAYMENT DETAILS */}
+        <div className="bg-gradient-to-r from-[#081733] to-[#0f2a5c] text-white p-6 rounded-[20px] shadow-[0_15px_40px_rgba(2,6,23,0.25)] mb-6">
+          <p><strong>Easypaisa:</strong> 03423432443</p>
+          <p>Account Title: NOOR UL AMEEN</p>
+          <p><strong>Soneri Bank:</strong> 002520009149059</p>
+          <p>Account Title: NOOR UL AYAN</p>
+          <p className="text-[#38bdf8] mt-3 font-semibold">
+            Send exact amount: RS.{total}
+          </p>
+        </div>
+
+        {/* 🧾 CUSTOMER DETAILS */}
+        <div className="bg-white/80 backdrop-blur-sm p-6 rounded-[20px] shadow-[0_12px_30px_rgba(15,23,42,0.08)] border border-[#d9e5f6] mb-6 space-y-4">
+          <h3 className="font-semibold text-lg text-[#0f172a]">
+            Customer Details
+          </h3>
+
+          <input
+            type="text"
+            placeholder="Full Name *"
+            className="w-full border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff] outline-none"
+            value={customer.name}
+            onChange={(e) =>
+              setCustomer({ ...customer, name: e.target.value })
+            }
+          />
+
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff]"
+            value={customer.email}
+            onChange={(e) =>
+              setCustomer({ ...customer, email: e.target.value })
+            }
+          />
+
+          <input
+            type="text"
+            placeholder="Phone Number *"
+            className="w-full border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff]"
+            value={customer.phone}
+            onChange={(e) =>
+              setCustomer({ ...customer, phone: e.target.value })
+            }
+          />
+
+          <input
+            type="text"
+            placeholder="Address *"
+            className="w-full border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff]"
+            value={customer.address}
+            onChange={(e) =>
+              setCustomer({ ...customer, address: e.target.value })
+            }
+          />
+
+          <textarea
+            placeholder="Additional Notes (optional)"
+            className="w-full border border-[#d9e5f6] px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2678ff]"
+            value={customer.notes}
+            onChange={(e) =>
+              setCustomer({ ...customer, notes: e.target.value })
+            }
+          />
+        </div>
+
+        {/* 📤 FILE UPLOAD */}
+        <div className="bg-white/80 backdrop-blur-sm p-6 rounded-[20px] shadow-[0_12px_30px_rgba(15,23,42,0.08)] border border-[#d9e5f6] mb-6">
+          <input
+            type="file"
+            onChange={(e) => setFile(e.target.files[0])}
+            className="w-full text-sm text-slate-600"
+          />
+        </div>
+
+        {/* 🚀 SUBMIT BUTTON */}
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          className={`w-full py-3 rounded-full text-white font-semibold transition ${
+            loading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-gradient-to-r from-[#16c3ff] to-[#2678ff] hover:opacity-90 shadow-[0_12px_30px_rgba(37,117,255,0.3)]"
+          }`}
+        >
+          {loading ? "Submitting..." : "Submit Receipt"}
+        </button>
+
       </div>
-
-      {/* 🧾 CUSTOMER DETAILS */}
-      <div className="bg-white p-4 rounded shadow mb-6 space-y-4">
-        <h3 className="font-semibold text-lg">Customer Details</h3>
-
-        <input
-          type="text"
-          placeholder="Full Name *"
-          className="w-full border p-2 rounded"
-          value={customer.name}
-          onChange={(e) =>
-            setCustomer({ ...customer, name: e.target.value })
-          }
-        />
-
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full border p-2 rounded"
-          value={customer.email}
-          onChange={(e) =>
-            setCustomer({ ...customer, email: e.target.value })
-          }
-        />
-
-        <input
-          type="text"
-          placeholder="Phone Number *"
-          className="w-full border p-2 rounded"
-          value={customer.phone}
-          onChange={(e) =>
-            setCustomer({ ...customer, phone: e.target.value })
-          }
-        />
-
-        <input
-          type="text"
-          placeholder="Address *"
-          className="w-full border p-2 rounded"
-          value={customer.address}
-          onChange={(e) =>
-            setCustomer({ ...customer, address: e.target.value })
-          }
-        />
-
-        <textarea
-          placeholder="Additional Notes (optional)"
-          className="w-full border p-2 rounded"
-          value={customer.notes}
-          onChange={(e) =>
-            setCustomer({ ...customer, notes: e.target.value })
-          }
-        />
-      </div>
-
-      {/* 📤 FILE UPLOAD */}
-      <input
-        type="file"
-        onChange={(e) => setFile(e.target.files[0])}
-      />
-
-      {/* 🚀 SUBMIT BUTTON */}
-      <button
-        onClick={handleSubmit}
-        disabled={loading}
-        className={`mt-4 px-6 py-2 rounded text-white ${
-          loading
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-orange-600 hover:bg-orange-700"
-        }`}
-      >
-        {loading ? "Submitting..." : "Submit Receipt"}
-      </button>
     </div>
   );
 }

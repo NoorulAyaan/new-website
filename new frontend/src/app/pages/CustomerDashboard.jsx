@@ -9,9 +9,6 @@ export function CustomerDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  // ❌ REMOVE LOCAL CART STATE (NOW USING CONTEXT)
-  // const [cart, setCart] = useState([]);
-
   const [spareParts, setSpareParts] = useState([]);
 
   // ✅ USE GLOBAL CART CONTEXT
@@ -26,15 +23,14 @@ export function CustomerDashboard() {
         return res.json();
       })
       .then((data) => {
-        // 🔥 NORMALIZE DATA (VERY IMPORTANT)
         const normalized = data.map((p) => ({
           ...p,
           partName: p.part_name,
           vehicleName: p.vehicle_name,
           engineDetails: p.engine_details,
           brandName: p.brand_name,
+          partNumber: p.part_number, // 👈 THIS WAS MISSING
 
-          // 🔥 FIX IMAGE URL HERE (MAIN FIX)
           imageUrl: p.image
             ? `http://localhost:5001${p.image}`
             : "https://via.placeholder.com/400x300?text=No+Image",
@@ -63,21 +59,20 @@ export function CustomerDashboard() {
     return matchesSearch && matchesCategory;
   });
 
-  // 🔥 UPDATED HANDLER (NOW USING CONTEXT)
   const handleAddToCart = (part) => {
     addToCart(part);
     toast.success(`${part.partName} added to cart!`);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#eef3fb]">
 
       {/* HEADER */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="bg-gradient-to-r from-[#081733] to-[#0f2a5c] text-white shadow-[0_12px_30px_rgba(2,6,23,0.25)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-3xl font-bold text-gray-900">
+          <div className="flex justify-between items-center mb-5">
+            <h1 className="text-3xl font-bold">
               Shop Spare Parts
             </h1>
 
@@ -87,11 +82,10 @@ export function CustomerDashboard() {
                 navigate("/cart");
                 window.location.reload();
               }}
-              
-              className="cursor-pointer flex items-center space-x-2 bg-orange-100 px-4 py-2 rounded-lg hover:bg-orange-200 transition"
+              className="cursor-pointer flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-white/20 transition border border-white/20"
             >
-              <ShoppingCart className="h-5 w-5 text-orange-600" />
-              <span className="font-semibold text-orange-600">
+              <ShoppingCart className="h-5 w-5 text-white" />
+              <span className="font-semibold text-white text-sm">
                 Cart: {cart.reduce((total, item) => total + item.quantity, 0)} items
               </span>
             </div>
@@ -99,14 +93,14 @@ export function CustomerDashboard() {
 
           {/* SEARCH BAR */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-300" />
 
             <input
               type="text"
               placeholder="Search by part name, vehicle, or engine..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="w-full pl-12 pr-4 py-3 rounded-full bg-white/90 backdrop-blur-md text-black border border-white/20 focus:ring-2 focus:ring-[#2678ff] outline-none shadow-[0_10px_25px_rgba(0,0,0,0.1)]"
             />
           </div>
         </div>
@@ -116,17 +110,17 @@ export function CustomerDashboard() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         {/* CATEGORY FILTER */}
-        <div className="mb-6 flex items-center space-x-4 overflow-x-auto pb-2">
-          <Filter className="h-5 w-5 text-gray-600 flex-shrink-0" />
+        <div className="mb-6 flex items-center space-x-3 overflow-x-auto pb-2">
+          <Filter className="h-5 w-5 text-slate-600 flex-shrink-0" />
 
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
+              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
                 selectedCategory === category
-                  ? "bg-orange-600 text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-100"
+                  ? "bg-gradient-to-r from-[#16c3ff] to-[#2678ff] text-white shadow-[0_10px_25px_rgba(37,117,255,0.3)]"
+                  : "bg-white text-slate-700 border border-[#d9e5f6] hover:bg-[#f1f6ff]"
               }`}
             >
               {category}
@@ -135,7 +129,7 @@ export function CustomerDashboard() {
         </div>
 
         {/* RESULTS COUNT */}
-        <p className="text-gray-600 mb-4">
+        <p className="text-slate-600 mb-4">
           Found {filteredParts.length} part
           {filteredParts.length !== 1 ? "s" : ""}
         </p>
@@ -154,7 +148,7 @@ export function CustomerDashboard() {
           </div>
         ) : (
           <div className="text-center py-16">
-            <p className="text-gray-500 text-lg">
+            <p className="text-slate-500 text-lg">
               No parts found matching your search criteria
             </p>
           </div>
