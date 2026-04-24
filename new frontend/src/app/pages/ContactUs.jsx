@@ -92,6 +92,7 @@ export function ContactUs() {
                     First Name
                   </label>
                   <input type="text" id="firstName" name="firstName"
+                    placeholder="First Name"
                     className="w-full px-4 py-2 border border-[#d9e5f6] rounded-lg focus:ring-2 focus:ring-[#2678ff] focus:border-transparent outline-none transition"
                     required
                   />
@@ -102,6 +103,7 @@ export function ContactUs() {
                     Last Name
                   </label>
                   <input type="text" id="lastName" name="lastName"
+                    placeholder="Last Name"
                     className="w-full px-4 py-2 border border-[#d9e5f6] rounded-lg focus:ring-2 focus:ring-[#2678ff] focus:border-transparent outline-none transition"
                     required
                   />
@@ -113,6 +115,7 @@ export function ContactUs() {
                   Email
                 </label>
                 <input type="email" id="email" name="email"
+                  placeholder="Email"
                   className="w-full px-4 py-2 border border-[#d9e5f6] rounded-lg focus:ring-2 focus:ring-[#2678ff] focus:border-transparent outline-none transition"
                   required
                 />
@@ -123,6 +126,7 @@ export function ContactUs() {
                   Phone
                 </label>
                 <input type="tel" id="phone" name="phone"
+                  placeholder="Phone Number"
                   className="w-full px-4 py-2 border border-[#d9e5f6] rounded-lg focus:ring-2 focus:ring-[#2678ff] focus:border-transparent outline-none transition"
                 />
               </div>
@@ -132,6 +136,7 @@ export function ContactUs() {
                   Subject
                 </label>
                 <input type="text" id="subject" name="subject"
+                  placeholder="Subject"
                   className="w-full px-4 py-2 border border-[#d9e5f6] rounded-lg focus:ring-2 focus:ring-[#2678ff] focus:border-transparent outline-none transition"
                   required
                 />
@@ -142,6 +147,7 @@ export function ContactUs() {
                   Message
                 </label>
                 <textarea id="message" name="message" rows={4}
+                  placeholder="Your message..."
                   className="w-full px-4 py-2 border border-[#d9e5f6] rounded-lg focus:ring-2 focus:ring-[#2678ff] focus:border-transparent outline-none transition"
                   required
                 ></textarea>
@@ -197,10 +203,12 @@ export function ContactUs() {
           <p className="mb-4">Subscribe to our newsletter for parts deals, service tips, and special offers.</p>
 
           <form className="max-w-md mx-auto flex gap-2">
-            <input type="email" placeholder="Your email"
-              className="flex-1 px-4 py-2 rounded-full text-black outline-none"
+            <input
+              type="email"
+              placeholder="Your email"
+              className="flex-1 px-4 py-2 rounded-full bg-white text-[#0f172a] placeholder:text-slate-400 border border-white/40 focus:ring-2 focus:ring-white focus:outline-none"
             />
-            <button className="bg-white text-[#2678ff] px-4 py-2 rounded-full font-semibold hover:bg-gray-100">
+            <button className="bg-gradient-to-r from-[#16c3ff] to-[#2678ff] hover:from-[#11baf7] hover:to-[#1f6ef2] text-white px-6 py-2 rounded-full font-semibold shadow-[0_12px_30px_rgba(37,117,255,0.35)] transition-all duration-200">
               Subscribe
             </button>
           </form>

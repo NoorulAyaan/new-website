@@ -207,11 +207,28 @@ export function CheckoutPage() {
 
         {/* 📤 FILE UPLOAD */}
         <div className="bg-white/80 backdrop-blur-sm p-6 rounded-[20px] shadow-[0_12px_30px_rgba(15,23,42,0.08)] border border-[#d9e5f6] mb-6">
-          <input
-            type="file"
-            onChange={(e) => setFile(e.target.files[0])}
-            className="w-full text-sm text-slate-600"
-          />
+
+          <label className="flex items-center gap-3 cursor-pointer">
+            
+            {/* Hidden actual input */}
+            <input
+              type="file"
+              onChange={(e) => setFile(e.target.files[0])}
+              className="hidden"
+            />
+
+            {/* Styled button */}
+            <span className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#16c3ff] to-[#2678ff] text-white text-sm font-medium shadow">
+              Choose File
+            </span>
+
+            {/* File name */}
+            <span className="text-sm text-gray-500">
+              {file ? file.name : "No file selected"}
+            </span>
+
+          </label>
+
         </div>
 
         {/* 🚀 SUBMIT BUTTON */}

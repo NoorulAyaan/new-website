@@ -12,6 +12,7 @@ import hyundaiImage from "../images/Hyundai.avif";
 import kiaImage from "../images/Kia.avif";
 import mazdaImage from "../images/Mazda.jpeg";
 import mgImage from "../images/MG.webp";
+import baseImage from "../images/Background.webp";
 
 export function Home() {
   const { user, isAdmin } = useAuth();
@@ -116,7 +117,7 @@ export function Home() {
       {/* Hero Section */}
       <div className="relative h-[700px] overflow-hidden">
         <ImageWithFallback
-          src="https://images.unsplash.com/photo-1619642737579-a7474bee1044?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZWNoYW5pYyUyMHJlcGFpcmluZyUyMGNhciUyMHdvcmtzaG9wfGVufDF8fHx8MTc3NTQ1Mzg0OHww&ixlib=rb-4.1.0&q=80&w=1080"
+          src={baseImage}
           alt="Mechanic repairing car in workshop"
           className="w-full h-full object-cover"
         />
@@ -265,7 +266,7 @@ export function Home() {
       {/* Brands Carousel Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <h2 className="text-3xl font-bold text-center mb-4 text-[#0f172a]">
-          Brands We Have Parts For
+          Brands We Deal With
         </h2>
         <p className="text-center text-slate-600 mb-12 text-lg">
           We provide spare parts for trusted vehicle brands
@@ -371,7 +372,7 @@ export function Home() {
             <div className="bg-white p-6 rounded-[22px] shadow-[0_12px_30px_rgba(15,23,42,0.08)] border border-[#d9e5f6]">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-gradient-to-r from-[#16c3ff] to-[#2678ff] rounded-full flex items-center justify-center text-white font-bold shadow-[0_10px_24px_rgba(37,117,255,0.22)]">
-                  JD
+                  RK
                 </div>
                 <div className="ml-4">
                   <h4 className="font-semibold text-[#0f172a]">Rahmet Karim</h4>
@@ -386,7 +387,7 @@ export function Home() {
             <div className="bg-white p-6 rounded-[22px] shadow-[0_12px_30px_rgba(15,23,42,0.08)] border border-[#d9e5f6]">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-gradient-to-r from-[#16c3ff] to-[#2678ff] rounded-full flex items-center justify-center text-white font-bold shadow-[0_10px_24px_rgba(37,117,255,0.22)]">
-                  SM
+                  ZB
                 </div>
                 <div className="ml-4">
                   <h4 className="font-semibold text-[#0f172a]">Zahoor Baig</h4>
@@ -401,7 +402,7 @@ export function Home() {
             <div className="bg-white p-6 rounded-[22px] shadow-[0_12px_30px_rgba(15,23,42,0.08)] border border-[#d9e5f6]">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-gradient-to-r from-[#16c3ff] to-[#2678ff] rounded-full flex items-center justify-center text-white font-bold shadow-[0_10px_24px_rgba(37,117,255,0.22)]">
-                  MR
+                  ZU
                 </div>
                 <div className="ml-4">
                   <h4 className="font-semibold text-[#0f172a]">Zia Uddin</h4>
