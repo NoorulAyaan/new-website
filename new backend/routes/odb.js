@@ -53,21 +53,19 @@ router.get("/:code", async (req, res) => {
         messages: [
           {
             role: "system",
-            content: `You are an expert mechanic explaining car parts to a child. 
-            You MUST be very specific about exactly WHICH part is broken based on the code.
+            content: `You are a professional mechanic. You must provide a UNIQUE diagnosis for the specific code provided. 
+            Do NOT repeat previous explanations.
             
             RULES:
-            - title: Be specific. If the code mentions Cylinder 4, mention 'the 4th part'. For injectors, use 'juice sprayer' (e.g., 'The 4th juice sprayer is not giving fuel to the 4th piston').
-            - cause: Explain why that exact specific part failed in simple words.
-            - fix: Explain what the mechanic will do to that specific part.
-            - severity: Use only 'Low', 'Medium', or 'High'.
+            1. Identify the EXACT component (e.g., if code is Camshaft, talk about the 'Engine Timer'; if it's an Injector, talk about the 'Juice Sprayer').
+            2. Use a simple analogy for a child, but it MUST be accurate to the specific part.
+            3. If the code is P101D, it is about the Camshaft (Engine Timer), NOT an injector.
             
-            Return ONLY a JSON object with keys: "title", "cause", "fix", "severity". 
-            Use simple words, but NEVER remove the specific part number or location mentioned in the code description.`
+            Return ONLY JSON: {"title", "cause", "fix", "severity"}.`
           },
           {
             role: "user",
-            content: `Explain OBD code ${code} for a ${vehicle} specifically but simply.`
+            content: `Diagnose OBD code ${code} for a ${vehicle}. Ensure the answer is specific to THIS code only.`
           }
         ],
         response_format: { type: "json_object" }

@@ -4,6 +4,14 @@ import { Wrench, Search, ShieldCheck, Clock, ChevronLeft, ChevronRight } from "l
 import { useEffect, useState } from "react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import sideIMG from "../images/abcd.jpeg"
+import toyotaImage from "../images/toyota.jpg";
+import hondaImage from "../images/Honda.jpg";
+import suzukiImage from "../images/suzuki.jpg";
+import nissanImage from "../images/Nissan.jpg";
+import hyundaiImage from "../images/Hyundai.avif";
+import kiaImage from "../images/Kia.avif";
+import mazdaImage from "../images/Mazda.jpeg";
+import mgImage from "../images/MG.webp";
 
 export function Home() {
   const { user, isAdmin } = useAuth();
@@ -15,38 +23,39 @@ export function Home() {
     minutes: 0,
   });
 
+
   const brandLogos = [
     {
       name: "Toyota",
-      image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=1400&q=80",
+      image: toyotaImage,
     },
     {
       name: "Honda",
-      image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=80",
+      image: hondaImage,
     },
     {
       name: "Suzuki",
-      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=80",
+      image: suzukiImage,
     },
     {
       name: "Nissan",
-      image: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1400&q=80",
+      image: nissanImage,
     },
     {
       name: "Hyundai",
-      image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1400&q=80",
+      image: hyundaiImage,
     },
     {
       name: "Kia",
-      image: "https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1400&q=80",
+      image: kiaImage,
     },
     {
-      name: "Mitsubishi",
-      image: "https://images.unsplash.com/photo-1494905998402-395d579af36f?auto=format&fit=crop&w=1400&q=80",
+      name: "Mazda",
+      image: mazdaImage,
     },
     {
-      name: "Daihatsu",
-      image: "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1400&q=80",
+      name: "MG",
+      image: mgImage,
     },
   ];
 
