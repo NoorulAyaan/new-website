@@ -13,6 +13,7 @@ import kiaImage from "../images/Kia.avif";
 import mazdaImage from "../images/Mazda.jpeg";
 import mgImage from "../images/MG.webp";
 import baseImage from "../images/Background.webp";
+import Chatbot from "../components/Chatbot";
 
 export function Home() {
   const { user, isAdmin } = useAuth();
@@ -435,6 +436,7 @@ export function Home() {
           </Link>
         )}
       </div>
+      <Chatbot />
     </div>
   );
 }

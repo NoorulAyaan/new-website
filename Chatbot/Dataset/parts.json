@@ -1,0 +1,38 @@
+[
+  {
+    "part_name": "Brake Disc",
+    "slug": "brake_disc",
+    "category": "BrakeSystem",
+    "image": "BrakeSystem/BrakeDisc.jpeg"
+  },
+  {
+    "part_name": "Disc Pad",
+    "slug": "discpad",
+    "category": "BrakeSystem",
+    "image": "BrakeSystem/Discpad.jpeg"
+  },
+  {
+    "part_name": "Master Cylinder",
+    "slug": "mastercylinder",
+    "category": "BrakeSystem",
+    "image": "BrakeSystem/MasterCylinder.jpeg"
+  },
+  {
+    "part_name": "Air Filter",
+    "slug": "airfilter",
+    "category": "EngineSystem",
+    "image": "EngineSystem/AirFilter.jpeg"
+  },
+  {
+    "part_name": "Oil Filter",
+    "slug": "oilfilter",
+    "category": "EngineSystem",
+    "image": "EngineSystem/OilFilter.jpeg"
+  },
+  {
+    "part_name": "Spark Plug",
+    "slug": "sparkplug",
+    "category": "EngineSystem",
+    "image": "EngineSystem/SparkPlug.jpeg"
+  }
+]

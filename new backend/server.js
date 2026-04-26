@@ -11,6 +11,7 @@ const partsRoutes = require("./routes/partsRoutes");
 const brandRoutes = require("./routes/brandRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const obdRoutes = require("./routes/odb");
+const chatbotRoutes = require("./routes/chatbot");
 
 const app = express();
 
@@ -20,8 +21,9 @@ app.use(cors({
   credentials: true
 }));
 
-// JSON
-app.use(express.json());
+// ✅ FIXED HERE
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 // STATIC FILES
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -38,6 +40,7 @@ app.use("/api/parts", partsRoutes);
 app.use("/api/brands", brandRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/obd-codes", obdRoutes);
+app.use("/api/chatbot", chatbotRoutes);
 
 // PORT
 const PORT = process.env.PORT || 5001;
